@@ -69,12 +69,12 @@
     <string name="minchill">دمای واقعی</string>
     <string name="pflevel">سطح انجماد</string>
     <string name="meter">m</string>
-    <string name="send">{fa-envelope 200%} ارسال پیام</string>
+    <string name="send">ارسال پیام</string>
     <string name="phone_fa">{fa-phone 200%}</string>
     <string name="twice">twice click</string>
     <string name="tel">tel:02124875000</string>
     <string name="mail_fa">{fa-envelope 200%}</string>
-    <string name="call">{fa-phone 200%} 021-24875000</string>
+    <string name="call">۰۲۱-۲۴۸۷۵۰۰۰</string>
     <string name="place_status1">مانده تا پایان ساعت کاری</string>
     <string name="place_status2">مانده تا شروع مجدد به فعالیت</string>
     <string name="morning">صبح</string>
@@ -84,9 +84,10 @@
     <string name="place_status3">مانده تا پایان تعمیرات</string>
     <string name="worktimes">ساعات کاری</string>
     <string name="message_text">متن پیام</string>
-    <string name="phone_number">شماره تماس</string>
+    <string name="phone_number">شماره تماس (اختیاری)</string>
     <string name="update_text">نسخه ی جدید برنامه آماده شده است،آیا میخواهید آن را دریافت کنید؟</string>
     <string name="update">آپدیت</string>
     <string name="accept">بلی</string>
     <string name="dialog_no">خیر</string>
+    <string name="circle">{fa-exclamation-circle}</string>
 </resources>

@@ -13,7 +13,7 @@
 
     <permission
         android:name="com.example.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
     <uses-permission android:name="org.tochal.android.permission.MAPS_RECEIVE" />
 
     <uses-feature
@@ -40,7 +40,10 @@
             android:name=".IntroActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_intro" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

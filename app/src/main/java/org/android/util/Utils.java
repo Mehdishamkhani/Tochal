@@ -25,6 +25,7 @@ import java.util.Random;
 public class Utils {
 
 
+
     public final static String App_Folder_Name = "/tochal/";
     public final static String App_Folder_Image = "image/";
     public final static String App_Folder_Update = "update/";

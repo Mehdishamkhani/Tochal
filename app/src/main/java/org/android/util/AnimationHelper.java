@@ -33,7 +33,7 @@ public class AnimationHelper extends android.view.animation.Animation {
             mContent.setLayoutParams(lp);
             final LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                     0,
-                    LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
+                    mContent.getHeight(),
                     mStartWeight
 
             );

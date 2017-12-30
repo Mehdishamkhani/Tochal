@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#303030</color>
+    <color name="colorPrimary">#05a0d5</color>
     <color name="colorPrimaryDark">#303030</color>
     <color name="colorPrimaryLight">#303030</color>
-    <color name="colorAccent">#FFD740</color>
+    <color name="colorAccent">#05a0d5</color>
 
     <color name="colorLightPrimary">#cfd8dc</color>
     <color name="colorPrimaryText">#212121</color>
@@ -17,7 +17,7 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="mainhead_services">#5a4646</color>
-    <color name="green_bg">#b3d9bc</color>
+    <color name="green_bg">#c5edcd</color>
     <color name="red_bg">#ffc8c8</color>
     <color name="gray_level1">#eeeeee</color>
     <color name="btn_blue">#5298d9</color>

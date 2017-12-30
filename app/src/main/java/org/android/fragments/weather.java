@@ -40,6 +40,7 @@ import org.android.rest.MyNetworkListener;
 import org.android.rest.NetworkExceptionHandler;
 import org.android.rest.RequestRepository;
 import org.android.util.FontHelper;
+import org.android.views.LoadingLayout;
 import org.greenrobot.greendao.annotation.NotNull;
 
 import java.util.ArrayList;
@@ -69,6 +70,8 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     @BindView(R.id.rf)
     SwipeRefreshLayout rf;
 
+    @BindView(R.id.loading)
+    LoadingLayout loading;
 
     private WeatherItemRecyclerViewAdapter mAdapter;
     private String type = WeatherType.MIN;
@@ -95,10 +98,11 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         View v = inflater.inflate(R.layout.fragment_weather, container, false);
         ButterKnife.bind(this, v);
 
+
         getActivity().getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
-
+        loading.SetState(LoadingLayout.STATE_LOADING);
         rf.setOnRefreshListener(this);
         rf.setColorSchemeResources(R.color.colorAccent);
 
@@ -228,6 +232,7 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         @Override
         public void getResult(ForecastModel result) {
 
+            loading.SetState(LoadingLayout.STATE_SHOW_DATA);
 
             forecast = result.getForecast();
             Gson gson = new Gson();
@@ -241,7 +246,6 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 
                 int i = 0;
                 int radius = Item.NO_RADIUS;
-
                 for (PlaceModel placeModel : places.getData()) {
 
                     if (places.getData().size() == 1)
@@ -255,6 +259,7 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 
                     addItem(new Item(placeModel.getName(), R.drawable.close, placeModel.getHeight(), radius));
                     i++;
+                    radius = Item.NO_RADIUS;
 
                 }
 
@@ -283,6 +288,9 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
             if (v != null)
                 Snackbar.make(v, error.error_fa_message, Snackbar.LENGTH_LONG).show();
 
+
+            loading.setError(error.error_fa_message);
+            loading.SetState(LoadingLayout.STATE_SHOW_Error);
             rf.setRefreshing(false);
 
         }

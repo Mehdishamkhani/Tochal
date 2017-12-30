@@ -46,6 +46,7 @@ import org.android.rest.RequestRepository;
 import org.android.util.PersianDate;
 import org.android.util.Place;
 import org.android.util.TimeHelper;
+import org.android.views.LoadingLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -100,6 +101,9 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout collapsingToolbarLayout;
 
+    @BindView(R.id.loading)
+    LoadingLayout loading;
+
     private ItemRecyclerViewAdapter adp;
 
     String phone;
@@ -126,6 +130,7 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
         View view = inflater.inflate(R.layout.fragment_services, container, false);
         ButterKnife.bind(this, view);
 
+        loading.SetState(LoadingLayout.STATE_LOADING);
         rf.setOnRefreshListener(this);
         rf.setColorSchemeResources(R.color.colorAccent);
         detail.setOnClickListener(this);
@@ -227,6 +232,8 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
         public void getResult(PlacesModel result) {
 
 
+            loading.SetState(LoadingLayout.STATE_SHOW_DATA);
+
             //default   ###IS POS 0 ###
             PlaceModel def = result.getData().get(0);
             mainhead.setText(def.getName());
@@ -313,23 +320,15 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
             // store new places data
             Gson gson = new Gson();
             String json = gson.toJson(result);
-            PreferenceManager.getDefaultSharedPreferences(
-
-                    getActivity()).
-
-                    edit()
-                    .
-
-                            putString(getString(R.string.place_data_key), json).
-
-                    apply();
-
+            PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString(getString(R.string.place_data_key), json).apply();
             rf.setRefreshing(false);
         }
 
         @Override
         public void getException(NetworkExceptionHandler error) {
 
+            loading.setError(error.error_fa_message);
+            loading.SetState(LoadingLayout.STATE_SHOW_Error);
             Toast.makeText(getActivity(), error.error_fa_message, Toast.LENGTH_LONG).show();
             rf.setRefreshing(false);
 

@@ -3,6 +3,7 @@ package org.android.fragments;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,10 +17,12 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconButton;
+import com.joanzapata.iconify.widget.IconTextView;
 
 import org.android.R;
 import org.android.util.AnimationHelper;
@@ -38,10 +41,16 @@ public class feedback extends Fragment {
     }
 
     @BindView(R.id.mail)
-    IconButton mail;
+    RelativeLayout mail;
+
+    @BindView(R.id.mail_txt)
+    TextView mtxt;
 
     @BindView(R.id.call)
-    IconButton call;
+    RelativeLayout call;
+
+    @BindView(R.id.call_txt)
+    TextView ctxt;
 
 
     public static feedback newInstance() {
@@ -62,6 +71,7 @@ public class feedback extends Fragment {
 
         ButterKnife.bind(this, v);
 
+
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +87,7 @@ public class feedback extends Fragment {
                     float mweight = ((LinearLayout.LayoutParams) mail.getLayoutParams()).weight;
 
 
-                    mail.setText(R.string.mail_fa);
+                    mtxt.setVisibility(View.GONE);
                     Animation a = new AnimationHelper.ExpandAnimation(call, mail, cweight, mweight);
                     a.setDuration(400);
                     a.setAnimationListener(new Animation.AnimationListener() {
@@ -89,7 +99,8 @@ public class feedback extends Fragment {
                         @Override
                         public void onAnimationEnd(Animation animation) {
 
-                            call.setText(R.string.call);
+                            ctxt.setVisibility(View.VISIBLE);
+                            //call.setTypeface(FontHelper.get(getActivity(),"isans"));
                         }
 
                         @Override
@@ -133,7 +144,7 @@ public class feedback extends Fragment {
                     float mweight = ((LinearLayout.LayoutParams) mail.getLayoutParams()).weight;
 
 
-                    call.setText(R.string.phone_fa);
+                    ctxt.setVisibility(View.GONE);
                     Animation a2 = new AnimationHelper.ExpandAnimation(mail, call, mweight, cweight);
                     a2.setAnimationListener(new Animation.AnimationListener() {
                         @Override
@@ -144,7 +155,8 @@ public class feedback extends Fragment {
                         @Override
                         public void onAnimationEnd(Animation animation) {
 
-                            mail.setText(R.string.send);
+                            mtxt.setVisibility(View.VISIBLE);
+                            //mail.setTypeface(FontHelper.get(getActivity(),"isans"));
 
                         }
 
