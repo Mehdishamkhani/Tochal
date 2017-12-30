@@ -30,7 +30,7 @@ public class IntroActivity extends AppCompatActivity {
         int height = dm.heightPixels;
 
         GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(vid);
-        Glide.with(this).load(R.raw.tcg).into(imageViewTarget);
+        //Glide.with(this).load(R.raw.tcg).into(imageViewTarget);
 
         new Timer().schedule(new TimerTask() {
             @Override
