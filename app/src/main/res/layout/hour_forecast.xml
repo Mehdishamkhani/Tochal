@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <org.android.views.TextViewTypeFace
+        android:id="@+id/date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/subtext_size_bottom_padding"
+        android:layout_marginLeft="@dimen/primary_text_margin"
+        android:layout_marginRight="@dimen/primary_text_margin"
+        android:layout_marginTop="@dimen/primary_text_margin"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="@dimen/subtext_size"
+        app:fontName="isans"
+        tools:text="21:00" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7"
+        android:gravity="center">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/weather_state"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:contentDescription="test"
+            fresco:actualImageScaleType="fitCenter"
+            fresco:fadeDuration="300"
+            fresco:progressBarAutoRotateInterval="1000"
+            fresco:progressBarImage="@drawable/loading"
+            fresco:progressBarImageScaleType="centerInside"
+            tools:src="@drawable/ua" />
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <org.android.views.TextViewTypeFace
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/subtext_size_bottom_padding"
+            android:layout_marginLeft="@dimen/primary_text_margin"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:layout_marginTop="@dimen/subtext_size_bottom_padding"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            tools:text="+12C" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:orientation="horizontal">
+
+            <org.android.views.TextViewTypeFace
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wind"
+                android:layout_marginRight="@dimen/primary_text_margin"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="@dimen/subtext_size" />
+
+            <org.android.views.TextViewTypeFace
+                android:id="@+id/wind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="@dimen/subtext_size"
+                tools:text="4.58 m/s,Nw" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="-5dp"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:orientation="horizontal">
+
+            <org.android.views.TextViewTypeFace
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/humidity"
+                android:layout_marginRight="@dimen/primary_text_margin"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="@dimen/subtext_size" />
+
+            <org.android.views.TextViewTypeFace
+                android:id="@+id/humidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="@dimen/subtext_size"
+               />
+        </LinearLayout>
+
+
+
+        <!---LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/subtext_size_bottom_padding"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:layout_marginTop="@dimen/subtext_size_bottom_padding"
+            android:orientation="horizontal">
+
+            <org.android.views.TextViewTypeFace
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginRight="@dimen/primary_text_margin"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="@dimen/subtext_size" />
+        <org.android.views.TextViewTypeFace
+            android:id="@+id/pressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/subtext_size_bottom_padding"
+            android:layout_marginLeft="@dimen/primary_text_margin"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/subtext_size"
+            tools:text="743 mmHg." />
+        </LinearLayout-->
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,7 @@
+ext {
+
+    BASE_WEATHER_URL = "http://api.apixu.com/v1/";
+    BASE_GEONAME_URL= "http://api.geonames.org/";
+    GEONAME_API_KEY= "tochal_serv";
+    WEATHER_API_KEY = "b5f742d38ee748d0a6d145820170612";
+}

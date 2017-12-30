@@ -1,0 +1,176 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.android.fragments.weather">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context="org.android.MainActivity"  app:elevation="0dp">
+
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                app:elevation="0dp">
+
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/toolbar_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#808080"
+                    android:fitsSystemWindows="true"
+                    android:gravity="center"
+                    app:elevation="0dp"
+                    app:toolbarId="@+id/toolbar">
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/detail_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:contentInsetLeft="0dp"
+                        app:contentInsetStart="0dp"
+
+                        app:elevation="0dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <org.android.views.TextViewTypeFace
+                                android:id="@+id/back"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                app:fontName="isans"
+                                android:layout_alignParentLeft="true"
+                                android:src="@drawable/ic_arrow_back_white_24dp"
+                                android:visibility="gone" />
+
+                            <LinearLayout
+                                android:id="@+id/main_toolbar_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <org.android.views.TextViewTypeFace
+                                    android:id="@+id/appbar_head"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:fontName="isans"
+                                    android:text=""
+                                    android:textColor="@android:color/white" />
+
+                                <org.android.views.TextViewTypeFace
+                                    android:id="@+id/appbar_subhead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    app:fontName="isans"
+                                    android:visibility="gone"
+                                    android:textColor="@android:color/white" />
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </android.support.v7.widget.Toolbar>
+                </android.support.design.widget.CollapsingToolbarLayout>
+            </android.support.design.widget.AppBarLayout>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="206dp">
+
+            <xyz.matteobattilana.library.WeatherView
+                android:id="@+id/weather"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="-100dp"
+                android:layout_marginRight="-100dp"
+                android:layout_marginTop="-100dp"
+                android:fillViewport="true"
+                android:fitsSystemWindows="true"
+                app:angle="-3"
+                app:fadeOutTime="8200"
+                app:fps="40"
+                app:lifeTime="100"
+                app:numParticles="55"
+                app:orientationMode="DISABLE"
+                app:startingWeather="SUN" />
+
+            <com.github.ahmadnemati.wind.WindView
+                android:id="@+id/windview"
+                android:layout_width="match_parent"
+                android:layout_height="206dp"
+                android:background="@drawable/header2"
+                app:barometerTickSpacing="9dp"
+                app:bigPoleX="38dp"
+                app:labelFontSize="12sp"
+                app:numericFontSize="25sp"
+                app:poleBottomY="98dp"
+                app:pressureLineY="73dp"
+                app:pressureTextX="12dp"
+                app:pressureTextY="4dp"
+                app:smallPoleX="75dp"
+                app:windTextX="10dp"
+                app:windTextY="29dp"
+
+                />
+        </RelativeLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/rf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_vertical_margin">
+
+                <org.android.views.TextViewTypeFace
+                    android:id="@+id/list_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:fontName="isans"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:text="ایستگاه تلکابین" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/stations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingBottom="?attr/actionBarSize"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:listitem="@layout/list_item" />
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>
+
+</FrameLayout>

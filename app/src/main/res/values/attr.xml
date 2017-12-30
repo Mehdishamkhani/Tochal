@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="MyTriangle" >
+        <attr name="mDirection" format="enum">
+            <enum name="North" value="0"/>
+            <enum name="South" value="1"/>
+            <enum name="East" value="2"/>
+            <enum name="West" value="3"/>
+        </attr>
+        <attr name="mColor" format="color">
+
+        </attr>
+    </declare-styleable>
+</resources>

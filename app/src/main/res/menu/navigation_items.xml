@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_contact"
+        android:title="ثبت پیشنهاد "
+        android:icon="@drawable/menu_contact" />
+    <item android:id="@+id/menu_weather"
+        android:title="هواشناسی"
+        android:icon="@drawable/menu_weather" />
+    <item android:id="@+id/menu_flag"
+        android:title="نقشه"
+        android:icon="@drawable/menu_flag" />
+
+    <item android:id="@+id/menu_assets"
+        android:title="امکانات"
+        android:icon="@drawable/menu_assets" />
+</menu>

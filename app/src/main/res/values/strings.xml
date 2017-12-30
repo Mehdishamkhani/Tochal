@@ -1,0 +1,92 @@
+<resources xmlns:xliff="http://schemas.android.com/tools">
+    <string name="app_name">tochal</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="could_not_find_a_city">Could not find a city. Try another name</string>
+    <string name="start_typing">Start typing the name of the city</string>
+    <string name="select_city">To view weather select a city</string>
+
+    <string name="format_wind">Wind:<xliff:g id="speed">1%.0f</xliff:g> <xliff:g id="unit">2%.0f </xliff:g>, <xliff:g id="dir">%3$s</xliff:g></string>
+    <string name="format_wind_hourly" translatable="false"><xliff:g id="speed">1%.0f</xliff:g> <xliff:g id="unit">%2$s</xliff:g></string>
+    <string name="temperature_plus">Temperature: +%.1f <xliff:g id="unit">%2$s</xliff:g></string>
+    <string name="temperature_minus">Temperature: %.1f <xliff:g id="unit">%2$s</xliff:g></string>
+    <string name="format_humidity">Humidity: %d%%</string>
+    <string name="format_humidity_hourly">1%.0f humidity</string>
+    <string name="format_pressure">Pressure: %.0f <xliff:g id="pressure">%2$s</xliff:g></string>
+    <string name="format_pressure_hourly" translatable="false">%.0f <xliff:g id="pressure">%2$s</xliff:g></string>
+    <string name="format_temp_plus" translatable="false">+%.1f <xliff:g id="unit">%2$s</xliff:g></string>
+    <string name="format_temp_minus" translatable="false">%.1f <xliff:g id="unit">%2$s</xliff:g></string>
+    <string name="permission_denied" translatable="false">Permission denied!</string>
+    <string name="no_internet" translatable="false">No Internet connection available…</string>
+    <string name="image_description" translatable="false">Image</string>
+    <string name="error">Error</string>
+    <string name="error_load_data">Oops… Something went wrong</string>
+    <string name="failed_to_load_weather">Failed to load weather</string>
+    <string name="city_caption">City: </string>
+    <string name="country_caption">Country: </string>
+    <string name="action_search">Search</string>
+    <string name="about">About</string>
+
+    <!-- Strings related to Widgets -->
+    <string name="title_widget_today">Weather Today</string>
+    <!-- Strings for formatting weather-related data -->
+    <string name="format_widget_temperature" translatable="false"><xliff:g id="temp">%1.0f</xliff:g><xliff:g id="unit">%2$s</xliff:g></string>
+    <!-- Strings strings -->
+    <string name="pref_header_general">General</string>
+    <string name="pref_use_current_location_key" translatable="false">pref_enable_lacation_key</string>
+    <string name="pref_enable_location_summary">Enable locations</string>
+    <string name="pref_enable_location_title">My locations</string>
+    <string name="pref_general_key" translatable="false">pref_general_key</string>
+    <string name="pref_unit_key" translatable="false">pref_unit_key</string>
+    <string name="pref_unit_title">Measure units</string>
+    <string name="pref_sync_title">Data update period</string>
+    <string name="pref_sync_key" translatable="false">pref_sync_key</string>
+    <string name="pref_selected_lang_key" translatable="false">pref_selected_lang_key</string>
+    <string name="pref_lang_title">Language</string>
+    <string name="unknown_location">Unknown city</string>
+
+
+    <string name="pref_data_key" translatable="false">forecast</string>
+
+
+    <string name="title_activity_intro">IntroActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="lorem">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="empty">empty</string>
+    <string name="head">HEAD</string>
+    <string name="type">TYPE</string>
+    <string name="dash">-</string>
+    <string name="isans">isans</string>
+    <string name="wind_unit">km/h</string>
+    <string name="wind">باد</string>
+    <string name="pressure_unit">in mmHg</string>
+    <string name="pressure">فشار هوا</string>
+    <string name="humidity">رطوبت</string>
+    <string name="pminchill">دمای محسوس</string>
+    <string name="minchill">دمای واقعی</string>
+    <string name="pflevel">سطح انجماد</string>
+    <string name="meter">m</string>
+    <string name="send">{fa-envelope 200%} ارسال پیام</string>
+    <string name="phone_fa">{fa-phone 200%}</string>
+    <string name="twice">twice click</string>
+    <string name="tel">tel:02124875000</string>
+    <string name="mail_fa">{fa-envelope 200%}</string>
+    <string name="call">{fa-phone 200%} 021-24875000</string>
+    <string name="place_status1">مانده تا پایان ساعت کاری</string>
+    <string name="place_status2">مانده تا شروع مجدد به فعالیت</string>
+    <string name="morning">صبح</string>
+    <string name="evening">بعدازظهر</string>
+    <string name="night">شب</string>
+    <string name="place_data_key">place_data_key</string>
+    <string name="place_status3">مانده تا پایان تعمیرات</string>
+    <string name="worktimes">ساعات کاری</string>
+    <string name="message_text">متن پیام</string>
+    <string name="phone_number">شماره تماس</string>
+    <string name="update_text">نسخه ی جدید برنامه آماده شده است،آیا میخواهید آن را دریافت کنید؟</string>
+    <string name="update">آپدیت</string>
+    <string name="accept">بلی</string>
+    <string name="dialog_no">خیر</string>
+</resources>
