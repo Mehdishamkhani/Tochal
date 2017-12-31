@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,7 +144,6 @@ public class feedback extends Fragment {
                     float cweight = ((LinearLayout.LayoutParams) call.getLayoutParams()).weight;
                     float mweight = ((LinearLayout.LayoutParams) mail.getLayoutParams()).weight;
 
-
                     ctxt.setVisibility(View.GONE);
                     Animation a2 = new AnimationHelper.ExpandAnimation(mail, call, mweight, cweight);
                     a2.setAnimationListener(new Animation.AnimationListener() {
@@ -190,9 +190,20 @@ public class feedback extends Fragment {
     public void onDetach() {
         super.onDetach();
 
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
         MailClickCounter = 1;
         CallClickCounter = 0;
     }
-
-
 }

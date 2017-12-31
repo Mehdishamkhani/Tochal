@@ -14,6 +14,8 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
@@ -26,6 +28,8 @@ import org.android.events.UpdateApk;
 import org.android.util.LocaleHelper;
 import org.android.util.SettingsManager;
 import org.android.util.Utils;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -133,7 +137,9 @@ public class BaseActivity extends AppCompatActivity {
         return false;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEventMainThread(UpdateApk erf) throws IOException {
+
         SettingsManager sm = new SettingsManager(getApplicationContext());
         boolean lastDownloadState = checkApkDownloadOK(sm.getIdDOwnload());
         int lastVersionCode = sm.getVersionCodeDownload();
@@ -144,6 +150,7 @@ public class BaseActivity extends AppCompatActivity {
 
         if (BuildConfig.VERSION_CODE < Integer.valueOf(erf.mConfig.latest_version))//BuildConfig.VERSION_CODE<erf.mConfig.android.latest
         {
+
 
             if (BuildConfig.VERSION_CODE >= Integer.valueOf(erf.mConfig.latest_support_version)) {
                 MaterialDialog md = new MaterialDialog.Builder(BaseActivity.this)
@@ -208,6 +215,7 @@ public class BaseActivity extends AppCompatActivity {
         DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(erf.mConfig.app_path));
         String localdownloadPath = Utils.App_Folder_Name + Utils.App_Folder_Update;
+
         File fileDir = new File(localdownloadPath);
         if (fileDir.isDirectory()) {
             request.setDestinationInExternalPublicDir(localdownloadPath, Utils.Apk_download_Name);

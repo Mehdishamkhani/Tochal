@@ -16,9 +16,7 @@ import org.android.data.model.PlacesModel;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by shamkhani on 11/18/2015.
- */
+
 public class RequestRepository {
     public final static int Event_Invite = 0;
     public final static int Event_Join = 1;
@@ -108,6 +106,7 @@ public class RequestRepository {
         Map<String, String> params = new HashMap<String, String>();
         //params.put("username", username);
         //params.put("password", password);
+
         CustomGsonRequest sr = new CustomGsonRequest<Config>(RestUrl.CONFIG, Request.Method.GET, Config.class, params, listener);
         sr.setTag(volley_tag_Request);
         NetworkManager.getInstance().requestQueue.add(sr);

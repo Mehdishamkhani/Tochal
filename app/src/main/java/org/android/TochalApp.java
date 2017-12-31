@@ -64,7 +64,7 @@ public class TochalApp extends Application {
 
         @Override
         public void getResult(Config result) {
-            Log.d("Application Class", "result back Config");
+            //Log.d("Application Class", "result back Config");
             EventBus.getDefault().post(new UpdateApk(result));
             TochalApp.config = result;
         }
