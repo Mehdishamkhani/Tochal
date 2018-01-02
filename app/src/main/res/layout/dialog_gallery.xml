@@ -7,59 +7,66 @@
     tools:context="org.android.MainActivity">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <org.android.views.TextViewTypeFace
-            android:id="@+id/title"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="#e7992a"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:text="سر تیتر "
-            android:textColor="@android:color/white"
-            android:textSize="19dp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/slider"
+            <org.android.views.TextViewTypeFace
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:background="#eeeeee" />
+                android:layout_gravity="center"
+                android:background="#e7992a"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="@string/gallery"
+                android:textColor="@android:color/white"
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/back"
-                android:src="@drawable/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                />
+            <org.android.views.LoadingLayout
+                android:id="@+id/gload"
+                android:gravity="center"
+                android:background="@color/gray_level1"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/forward"
-                android:src="@drawable/forward"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </LinearLayout>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:background="#eeeeee" />
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/back" />
+
+                <ImageView
+                    android:id="@+id/forward"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/forward" />
+
+            </RelativeLayout>
+            </org.android.views.LoadingLayout>
+
+        </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
 
     <!---            app:layout_anchor="@id/container"

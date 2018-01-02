@@ -1,10 +1,13 @@
 package org.android.fragments;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -138,6 +141,14 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
         contact.setOnClickListener(this);
         time.setOnClickListener(this);
 
+        loading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (loading.getCurrentState() == LoadingLayout.STATE_SHOW_Error)
+                    refreshOperation();
+            }
+        });
+
 
         cdw.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
             @Override
@@ -214,6 +225,7 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
 
     private void refreshOperation() {
 
+        loading.SetState(LoadingLayout.STATE_LOADING);
         adp.clear();
         adp.notifyDataSetChanged();
         adp.setFirstSelected(-1);
@@ -327,8 +339,7 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
         @Override
         public void getException(NetworkExceptionHandler error) {
 
-            loading.setError(error.error_fa_message);
-            loading.SetState(LoadingLayout.STATE_SHOW_Error);
+            loading.setError(error.error_fa_message,true);
             Toast.makeText(getActivity(), error.error_fa_message, Toast.LENGTH_LONG).show();
             rf.setRefreshing(false);
 
@@ -350,7 +361,7 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
         switch (view.getId()) {
             case R.id.detail:
 
-                new DescDialog(getActivity(), "", description).show();
+                new DescDialog(getActivity(), description).show();
 
                 break;
 
@@ -360,11 +371,14 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_gallery);
 
-                final ImageViewPagerAdapter adapter = new ImageViewPagerAdapter(getActivity(), place_id);
                 final ViewPager pager = dialog.findViewById(R.id.slider);
                 TextView title = dialog.findViewById(R.id.title);
                 final ImageView back = dialog.findViewById(R.id.back);
                 final ImageView forward = dialog.findViewById(R.id.forward);
+                final LoadingLayout gload = dialog.findViewById(R.id.gload);
+
+                final ImageViewPagerAdapter adapter = new ImageViewPagerAdapter(getActivity(), place_id, gload);
+
 
                 pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
@@ -409,11 +423,16 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
                 break;
 
             case R.id.contact:
-
                 if (phone != null) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:" + phone));
-                    startActivity(callIntent);
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                            ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) !=
+                                    PackageManager.PERMISSION_GRANTED)
+                        Toast.makeText(getActivity(), R.string.no_permission, Toast.LENGTH_LONG).show();
+                    else {
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:" + phone));
+                        startActivity(callIntent);
+                    }
                 }
 
                 break;

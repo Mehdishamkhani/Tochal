@@ -90,4 +90,9 @@
     <string name="accept">بلی</string>
     <string name="dialog_no">خیر</string>
     <string name="circle">{fa-exclamation-circle}</string>
+    <string name="description">توضیحات</string>
+    <string name="no_permission">عدم دسترسی</string>
+    <string name="permission_need">برای استفاده از تمامی امکانات اجازه بیشتر نیاز است</string>
+    <string name="gallery">تصاویر</string>
+    <string name="refresh">{fa-repeat 300%}</string>
 </resources>

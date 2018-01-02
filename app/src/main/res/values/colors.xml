@@ -22,5 +22,6 @@
     <color name="gray_level1">#eeeeee</color>
     <color name="btn_blue">#5298d9</color>
     <color name="btn_green">#4fad63</color>
+    <color name="gray_08">#888888</color>
 
 </resources>

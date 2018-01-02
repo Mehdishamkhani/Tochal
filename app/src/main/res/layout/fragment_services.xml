@@ -153,21 +153,22 @@
             </LinearLayout>
         </LinearLayout>
 
+        <org.android.views.LoadingLayout
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/rf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="?attr/actionBarSize">
-
-            <org.android.views.LoadingLayout
-                android:id="@+id/loading"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/rf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="?attr/actionBarSize">
+
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/stations"
@@ -180,8 +181,8 @@
                     app:layoutManager="LinearLayoutManager"
                     tools:listitem="@layout/list_item" />
 
-            </org.android.views.LoadingLayout>
-        </android.support.v4.widget.SwipeRefreshLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </org.android.views.LoadingLayout>
 
     </LinearLayout>
 

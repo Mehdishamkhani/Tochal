@@ -14,17 +14,14 @@ import org.android.R;
 
 public class DescDialog extends Dialog {
 
-    private final String title;
     public Activity c;
     public Dialog d;
     private String description;
 
-    public DescDialog(Activity a,String title , String description) {
+    public DescDialog(Activity a , String description) {
         super(a, R.style.Theme_Dialog);
         this.c = a;
         this.description = description;
-        this.title = title;
-
     }
 
     @Override
@@ -34,11 +31,7 @@ public class DescDialog extends Dialog {
         setContentView(R.layout.dialog_desc);
 
         TextView desc = (TextView) findViewById(R.id.desc);
-        TextView title = (TextView) findViewById(R.id.title);
-
         desc.setText(description);
-        title.setText(this.title);
-
 
     }
 

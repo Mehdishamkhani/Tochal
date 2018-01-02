@@ -163,6 +163,16 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         mAdapter.notifyDataSetChanged();
 
 
+        loading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (loading.getCurrentState() == LoadingLayout.STATE_SHOW_Error)
+                    refreshOperation();
+            }
+        });
+
+
         return v;
     }
 
@@ -199,6 +209,12 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     @Override
     public void onRefresh() {
 
+        refreshOperation();
+    }
+
+    private void refreshOperation() {
+
+        loading.SetState(LoadingLayout.STATE_LOADING);
         rf.setRefreshing(true);
         mAdapter.clear();
         mAdapter.setFirstSelected(-1);
@@ -289,8 +305,7 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                 Snackbar.make(v, error.error_fa_message, Snackbar.LENGTH_LONG).show();
 
 
-            loading.setError(error.error_fa_message);
-            loading.SetState(LoadingLayout.STATE_SHOW_Error);
+            loading.setError(error.error_fa_message, true);
             rf.setRefreshing(false);
 
         }

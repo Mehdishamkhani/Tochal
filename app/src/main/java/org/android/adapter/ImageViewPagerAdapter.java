@@ -19,6 +19,7 @@ import org.android.fragments.services;
 import org.android.rest.MyNetworkListener;
 import org.android.rest.NetworkExceptionHandler;
 import org.android.rest.RequestRepository;
+import org.android.views.LoadingLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +37,12 @@ public class ImageViewPagerAdapter extends PagerAdapter {
     int resId = 0;
     private List<String> list = new ArrayList<>();
 
-    public ImageViewPagerAdapter(final Context context, int id) {
+    public ImageViewPagerAdapter(final Context context, int id , final LoadingLayout gload) {
         mContext = context;
 
         if (id > 0) {
+
+            gload.SetState(LoadingLayout.STATE_LOADING);
 
             RequestRepository rr = new RequestRepository(context, ImageViewPagerAdapter.class.getSimpleName());
             rr.getGallery(id, new MyNetworkListener<GalleryModel>() {
@@ -47,6 +50,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
                 public void getResult(GalleryModel result) {
 
 
+                    gload.SetState(LoadingLayout.STATE_SHOW_DATA);
 
                     for (PictureModel gm : result.getData()) {
 
@@ -60,6 +64,8 @@ public class ImageViewPagerAdapter extends PagerAdapter {
                 @Override
                 public void getException(NetworkExceptionHandler error) {
 
+                    gload.SetState(LoadingLayout.STATE_SHOW_Error);
+                    gload.setError(error.error_fa_message);
                     Toast.makeText(context, error.error_fa_message, Toast.LENGTH_LONG).show();
                 }
             });
