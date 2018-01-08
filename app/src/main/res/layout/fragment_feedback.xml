@@ -41,6 +41,28 @@
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:background="@drawable/bg_white_radius"
                     android:maxLines="1"
+                    android:inputType="phone"
+                    android:id="@+id/phone"
+                    android:padding="5dp" />
+
+
+                <org.android.views.TextViewTypeFace
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/list_item_padding"
+                    android:text="@string/subject_fa"
+                    app:fontName="isans" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layoutDirection="rtl"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/bg_white_radius"
+                    android:maxLines="1"
+                    android:id="@+id/subject"
+                    android:inputType="textShortMessage"
                     android:padding="5dp" />
 
                 <org.android.views.TextViewTypeFace
@@ -57,6 +79,7 @@
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:background="@drawable/bg_white_radius"
                     android:layoutDirection="rtl"
+                    android:id="@+id/message"
                     android:lines="5"
                     android:padding="5dp"
                     android:textDirection="rtl" />

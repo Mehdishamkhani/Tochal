@@ -84,7 +84,7 @@
     <string name="place_status3">مانده تا پایان تعمیرات</string>
     <string name="worktimes">ساعات کاری</string>
     <string name="message_text">متن پیام</string>
-    <string name="phone_number">شماره تماس (اختیاری)</string>
+    <string name="phone_number">شماره تماس </string>
     <string name="update_text">نسخه ی جدید برنامه آماده شده است،آیا میخواهید آن را دریافت کنید؟</string>
     <string name="update">آپدیت</string>
     <string name="accept">بلی</string>
@@ -95,4 +95,7 @@
     <string name="permission_need">برای استفاده از تمامی امکانات اجازه بیشتر نیاز است</string>
     <string name="gallery">تصاویر</string>
     <string name="refresh">{fa-repeat 300%}</string>
+    <string name="subject_fa">موضوع</string>
+    <string name="msg_sending_failed">خطا در ارسال پیام</string>
+    <string name="msg_sending_ok">با تشکر پیام ارسال شد</string>
 </resources>

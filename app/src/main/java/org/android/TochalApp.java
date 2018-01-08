@@ -47,7 +47,7 @@ public class TochalApp extends Application {
         Fresco.initialize(this);
 
         //Glide.get(this).clearMemory();
-        //runInBackground();
+        runInBackground();
 
         Iconify.with(new FontAwesomeModule());
 

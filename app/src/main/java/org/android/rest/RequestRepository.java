@@ -1,6 +1,7 @@
 package org.android.rest;
 
 import android.content.Context;
+import android.util.Base64;
 
 import com.android.volley.Request;
 
@@ -12,6 +13,7 @@ import org.android.data.model.ForecastWeather;
 import org.android.data.model.GalleryModel;
 import org.android.data.model.PlaceModel;
 import org.android.data.model.PlacesModel;
+import org.android.rest.models.NoResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,12 +57,9 @@ public class RequestRepository {
 
     public void getWeathers(final MyNetworkListener<ForecastModel> listener) {
 
-
-        Map<String, String> params = new HashMap<String, String>();
-        //params.put("username", username);
-        //params.put("password", password);
-        CustomGsonRequest sr = new CustomGsonRequest<ForecastModel>(RestUrl.FORECAST, Request.Method.GET, ForecastModel.class, params, listener);
+        CustomGsonRequest sr = new CustomGsonRequest<ForecastModel>(RestUrl.FORECAST, Request.Method.GET, ForecastModel.class, null, listener);
         sr.setTag(volley_tag_Request);
+        sr.setAuth("XML57","M.P@tochal.org",mcontext);
         NetworkManager.getInstance().requestQueue.add(sr);
     }
 
@@ -108,6 +107,19 @@ public class RequestRepository {
         //params.put("password", password);
 
         CustomGsonRequest sr = new CustomGsonRequest<Config>(RestUrl.CONFIG, Request.Method.GET, Config.class, params, listener);
+        sr.setTag(volley_tag_Request);
+        NetworkManager.getInstance().requestQueue.add(sr);
+
+    }
+
+    public void sendFeedback(String phone , String subject ,String message , final MyNetworkListener<NoResponse> listener) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("phone_number", phone);
+        params.put("subject", subject);
+        params.put("description", message);
+
+        CustomGsonRequest sr = new CustomGsonRequest<NoResponse>(RestUrl.FEEDBACK, Request.Method.POST, NoResponse.class, params, listener);
         sr.setTag(volley_tag_Request);
         NetworkManager.getInstance().requestQueue.add(sr);
 

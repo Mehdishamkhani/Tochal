@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Size;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,18 +26,33 @@ import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconButton;
 import com.joanzapata.iconify.widget.IconTextView;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Digits;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Password;
+import com.mobsandgeeks.saripaar.annotation.ValidateUsing;
 
 import org.android.R;
+import org.android.rest.MyNetworkListener;
+import org.android.rest.NetworkExceptionHandler;
+import org.android.rest.RequestRepository;
+import org.android.rest.models.NoResponse;
 import org.android.util.AnimationHelper;
 import org.android.util.FontHelper;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class feedback extends Fragment {
+public class feedback extends Fragment implements Validator.ValidationListener {
 
     public int MailClickCounter = 1;
     public int CallClickCounter = 0;
+    private Validator validator;
 
     public feedback() {
 
@@ -52,6 +69,22 @@ public class feedback extends Fragment {
 
     @BindView(R.id.call_txt)
     TextView ctxt;
+
+    @BindView(R.id.phone)
+    @NotEmpty(message = "پر کردن این فیلد اجباری است")
+    @Digits(integer = 15,message = "فقط اعداد مجاز هستند")
+    @Length(min = 5, max = 12, message = "عنوان باید بیشتر از پنج حرف باشد")
+    EditText phone;
+
+    @BindView(R.id.subject)
+    @NotEmpty(message = "پر کردن این فیلد اجباری است")
+    @Length(min = 5, max = 300, message = "عنوان باید بیشتر از پنج حرف باشد")
+    EditText subject;
+
+    @BindView(R.id.message)
+    @NotEmpty(message = "پر کردن این فیلد اجباری است")
+    @Length(min = 5, max = 300, message = "متن پیام باید بین 5 تا 300 حرف باشد")
+    EditText message;
 
 
     public static feedback newInstance() {
@@ -72,6 +105,9 @@ public class feedback extends Fragment {
 
         ButterKnife.bind(this, v);
 
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
 
         call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +170,10 @@ public class feedback extends Fragment {
 
                 if (MailClickCounter >= 2) {
 
-                    Toast.makeText(getActivity(), R.string.twice, Toast.LENGTH_LONG).show();
+
+                    validator.validate();
+
+
                 }
 
 
@@ -205,5 +244,41 @@ public class feedback extends Fragment {
 
         MailClickCounter = 1;
         CallClickCounter = 0;
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+
+
+        RequestRepository rr = new RequestRepository();
+        rr.sendFeedback(phone.getText().toString(), subject.getText().toString(), message.getText().toString(), new MyNetworkListener<NoResponse>() {
+            @Override
+            public void getResult(NoResponse result) {
+                //Log.d(feedback.class.getSimpleName(),result);
+                Toast.makeText(getActivity(), R.string.msg_sending_ok, Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void getException(NetworkExceptionHandler error) {
+                Toast.makeText(getActivity(), R.string.msg_sending_failed, Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(getActivity());
+
+            // Display error messages ;)
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

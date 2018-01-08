@@ -1,6 +1,7 @@
 package org.android.rest;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -31,6 +32,10 @@ public class CustomGsonRequest<T> extends Request<T> {
     private boolean needToken=false;
     public final String TAG="WEBSERVICE";
     private String url;
+    private String pass;
+    private boolean needAuth = false;
+    private String username;
+
     public CustomGsonRequest(String url, int methodType, Class<T> clazz, Map<String, String> params, MyNetworkListener<T> listener) {
         super(methodType, url, null);
         setRetryPolicy(new DefaultRetryPolicy(200000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -48,6 +53,15 @@ public class CustomGsonRequest<T> extends Request<T> {
     }
 
 
+    public void setAuth(String user , String pass, Context mContext)
+    {
+        this.mContext=mContext;
+        this.pass=pass;
+        this.username = user;
+        this.needAuth=true;
+    }
+
+
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         if(needToken)
@@ -55,6 +69,13 @@ public class CustomGsonRequest<T> extends Request<T> {
             Map<String,String> headers=new HashMap<>();
             headers.put("Authorization", String.format("Bearer %s", String.format("%s",token)));
             return headers;
+        }else if(needAuth){
+
+            HashMap<String, String> params = new HashMap<String, String>();
+            String creds = String.format("%s:%s",this.username,this.pass);
+            String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+            params.put("Authorization", auth);
+            return params;
         }
         else
         {
