@@ -24,13 +24,10 @@ import org.android.views.LoadingLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by mehdi on 04/12/2017.
- */
+
 
 
 public class ImageViewPagerAdapter extends PagerAdapter {
-    private static int NUM_ITEMS = 2;
 
 
     private Context mContext;
@@ -50,7 +47,6 @@ public class ImageViewPagerAdapter extends PagerAdapter {
                 public void getResult(GalleryModel result) {
 
 
-                    gload.SetState(LoadingLayout.STATE_SHOW_DATA);
 
                     for (PictureModel gm : result.getData()) {
 
@@ -58,15 +54,14 @@ public class ImageViewPagerAdapter extends PagerAdapter {
 
                     }
 
+                    gload.SetState(LoadingLayout.STATE_SHOW_DATA);
                     notifyDataSetChanged();
                 }
 
                 @Override
                 public void getException(NetworkExceptionHandler error) {
 
-                    gload.SetState(LoadingLayout.STATE_SHOW_Error);
                     gload.setError(error.error_fa_message);
-                    Toast.makeText(context, error.error_fa_message, Toast.LENGTH_LONG).show();
                 }
             });
 

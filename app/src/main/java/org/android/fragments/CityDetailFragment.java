@@ -1,6 +1,7 @@
 package org.android.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -35,7 +36,6 @@ public class CityDetailFragment extends Fragment {
     private FrameLayout progressFrame;
     private TabLayout tabLayout;
     private boolean waitAnimations;
-    private PreferencesHelper pref;
     private ForecastModel data;
     private String type = WeatherType.MIN;
 
@@ -55,12 +55,14 @@ public class CityDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        pref = PreferencesHelper.getInstance();
-        Fresco.initialize(getActivity());
+        PreferencesHelper pref = PreferencesHelper.getInstance();
+        if (getActivity() != null)
+            Fresco.initialize(getActivity());
 
         String ds = pref.getJsonData(getActivity());
 
-        this.type = getArguments().getString("TYPE");
+        if (getArguments() != null)
+            this.type = getArguments().getString(getString(R.string.type), WeatherType.MIN);
 
         if (ds != null && !ds.equalsIgnoreCase(getString(R.string.empty))) {
 
@@ -81,11 +83,11 @@ public class CityDetailFragment extends Fragment {
 
     private void makeView() {
         //Utility.sortWeatherHour(forecasts);
-        if (data != null) {
+        if (data != null)
             addDaysToViewPager(data);
-        } else {
+        else
             showError();
-        }
+
     }
 
     private void addDaysToViewPager(ForecastModel model) {
@@ -94,40 +96,45 @@ public class CityDetailFragment extends Fragment {
         day.setHours(new ArrayList<PeriodsModel>());
         day.setType(type);
         days.add(day);
-        String lastDay = model.getForecast().getPeriods().get(0).plcdayname;
 
-        for (PeriodsModel period : model.getForecast().getPeriods()) {
+        if (model != null && model.getForecast().getPeriods().size() > 0) {
 
-            if (lastDay.equalsIgnoreCase(period.plcdayname)) {
-                day.getHours().add(period);
-            } else {
-                day = new DayPager();
-                day.setHours(new ArrayList<PeriodsModel>());
-                day.setType(type);
-                day.getHours().add(period);
-                days.add(day);
+            String lastDay = model.getForecast().getPeriods().get(0).plcdayname;
+
+            for (PeriodsModel period : model.getForecast().getPeriods()) {
+
+                if (lastDay.equalsIgnoreCase(period.plcdayname)) {
+                    day.getHours().add(period);
+                } else {
+                    day = new DayPager();
+                    day.setHours(new ArrayList<PeriodsModel>());
+                    day.setType(type);
+                    day.getHours().add(period);
+                    days.add(day);
+                }
+
+                lastDay = period.plcdayname;
+
             }
 
-            lastDay = period.plcdayname;
-
         }
 
-        if (viewPagerAdapter != null) {
+        if (viewPagerAdapter != null)
             viewPagerAdapter.addDays(days);
-        }
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.city_detail, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        final ViewPager viewPager = view.findViewById(R.id.viewpager);
+        tabLayout = view.findViewById(R.id.tabs);
         FragmentManager fragmentManager = getChildFragmentManager();
 
         viewPagerAdapter = new DaysViewPagerAdapter(fragmentManager, new ArrayList<DayPager>(), data.getForecast().getGmtissued());
@@ -154,7 +161,8 @@ public class CityDetailFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        progressFrame = (FrameLayout) getActivity().findViewById(R.id.progressFrame);
+        if (getActivity() != null)
+            progressFrame = getActivity().findViewById(R.id.progressFrame);
     }
 
     @Override
@@ -198,8 +206,8 @@ public class CityDetailFragment extends Fragment {
 
 
     public void showError() {
-        View view = getActivity().findViewById(R.id.viewpager);
-        if (view != null) {
+        if (getActivity() != null) {
+            View view = getActivity().findViewById(R.id.viewpager);
             String text = getResources().getString(R.string.error) + ": ";
             text += getResources().getString(R.string.failed_to_load_weather);
             Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();

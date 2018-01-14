@@ -4,15 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.bumptech.glide.Glide;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
-import org.android.data.local.ILocalDataSource;
-import org.android.data.local.LocalDataSource;
 import org.android.data.model.Config;
 import org.android.events.UpdateApk;
 import org.android.rest.MyNetworkListener;
@@ -22,12 +20,12 @@ import org.android.rest.RequestRepository;
 import org.android.util.LocaleHelper;
 
 import de.greenrobot.event.EventBus;
+import io.fabric.sdk.android.Fabric;
 
 
 public class TochalApp extends Application {
 
     public static SharedPreferences sSharedPreferences;
-    private ILocalDataSource localDataSource;
     public static Config config;
 
 
@@ -43,11 +41,10 @@ public class TochalApp extends Application {
         NetworkManager.getInstance(this, NetworkManager.REAL_SERVER);
 
         sSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        localDataSource = LocalDataSource.getInstance(this);
         Fresco.initialize(this);
 
         //Glide.get(this).clearMemory();
-        runInBackground();
+        //runInBackground();
 
         Iconify.with(new FontAwesomeModule());
 
@@ -55,6 +52,8 @@ public class TochalApp extends Application {
         RequestRepository rr = new RequestRepository(this, TochalApp.class.getSimpleName());
         rr.Get_Config(new getConfig());
 
+
+        Fabric.with(this, new Crashlytics());
     }
 
 
@@ -90,7 +89,4 @@ public class TochalApp extends Application {
         return sSharedPreferences;
     }
 
-    public ILocalDataSource getLocalDataSource() {
-        return localDataSource;
-    }
 }

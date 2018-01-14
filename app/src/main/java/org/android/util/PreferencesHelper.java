@@ -1,5 +1,6 @@
 package org.android.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -23,6 +24,7 @@ public class PreferencesHelper {
         return sInstance;
     }
 
+    @SuppressLint("CommitPrefEdits")
     public PreferencesHelper() {
         this.sharedPreferences = TochalApp.getSharedPreferences();
         this.editor = this.sharedPreferences.edit();

@@ -18,12 +18,7 @@ import java.util.Date;
 import java.util.Random;
 
 
-
-/**
- * Created by USER on 9/21/2015.
- */
 public class Utils {
-
 
 
     public final static String App_Folder_Name = "/tochal/";
@@ -32,7 +27,7 @@ public class Utils {
     public final static String Apk_download_Name = "tochal.apk";
     public final static Integer SocketTimeout = 90000;
 
-    public static final String[] persianDigits = {
+    private static final String[] persianDigits = {
             "\u0660", // ٠
             "\u0661", // ١
             "\u0662", // ٢
@@ -47,6 +42,7 @@ public class Utils {
     public static Uri tempPath = null;
 
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void makeMainFolder() {
         File parenttempDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + Utils.App_Folder_Name);
         File nomedia = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + Utils.App_Folder_Name + ".nomedia");
@@ -67,32 +63,30 @@ public class Utils {
     public static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / 160f);
-        return px;
+        return dp * (metrics.densityDpi / 160f);
     }
 
     public static float convertPixelsToDp(float px, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float dp = px / (metrics.densityDpi / 160f);
-        return dp;
+        return px / (metrics.densityDpi / 160f);
     }
 
 
     public static String EnglishDigitToPersianDigit(int value, int countOfDigit) {
-        String pDigit = "";
+        StringBuilder pDigit = new StringBuilder();
         while (value / 10 != 0) {
-            pDigit = persianDigits[value % 10] + pDigit;
+            pDigit.insert(0, persianDigits[value % 10]);
             value = value / 10;
         }
-        pDigit = persianDigits[value % 10] + pDigit;
+        pDigit.insert(0, persianDigits[value % 10]);
 
         if (countOfDigit != -1) {
             int dif = countOfDigit - pDigit.length();
             for (int i = 0; i < dif; i++)
-                pDigit = persianDigits[0] + pDigit;
+                pDigit.insert(0, persianDigits[0]);
         }
-        return pDigit;
+        return pDigit.toString();
     }
 
     public static Random rand = new Random(new Date().getTime());
@@ -127,52 +121,18 @@ public class Utils {
         }
         char[] arr = str.toCharArray();
         boolean capitalizeNext = true;
-        String phrase = "";
+        StringBuilder phrase = new StringBuilder();
         for (char c : arr) {
             if (capitalizeNext && Character.isLetter(c)) {
-                phrase += Character.toUpperCase(c);
+                phrase.append(Character.toUpperCase(c));
                 capitalizeNext = false;
                 continue;
             } else if (Character.isWhitespace(c)) {
                 capitalizeNext = true;
             }
-            phrase += c;
+            phrase.append(c);
         }
-        return phrase;
+        return phrase.toString();
     }
-
-    public class HELP_OVERLAY_EVENT_HOME_Tab {
-    }
-//    final MaterialDialog md;
-//    md=new MaterialDialog.Builder(mContext)
-//            .title("دانلود مجدد")
-//    .content("فایل خراب هست،آیا دوباره میخواهید آن را دانلود کنید؟")
-//    .positiveText("بلی")
-//    .callback(new MaterialDialog.ButtonCallback() {
-//        @Override
-//        public void onPositive(MaterialDialog dialog) {
-//            BooksRepository br=new BooksRepository(mContext);
-//            Book tempB1=br.getByID(tempBook.ID);
-//            tempB1.mustDownload=true;
-//            br.update(tempB1);
-//            for(int i=0;i<mDataset.size();i++)
-//            {
-//                if(mDataset.get(i).ID==tempB1.ID)
-//                {
-//                    mDataset.set(i,tempB1);
-//                    break;
-//                }
-//            }
-//            notifyDataSetChanged();
-//            Utils.StartDownloadFile(mContext, tempB1.ID, tempB1.fileNamePDF, Integer.valueOf(tempB1.fileSizePDF)
-//                    , tempB1.fileNameAudio, Integer.valueOf(tempB1.fileSizeAudio), tempB1.type, tempB1.title);
-//
-//        }
-//    })
-//            .buttonsGravity(GravityEnum.END)
-//    .titleGravity(GravityEnum.START)
-//    .contentGravity(GravityEnum.START)
-//    .negativeText("خیر")
-//    .show();
 
 }

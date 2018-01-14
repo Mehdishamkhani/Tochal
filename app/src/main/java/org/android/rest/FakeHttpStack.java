@@ -1,5 +1,6 @@
 package org.android.rest;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -29,9 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by USER on 11/26/2015.
- */
+
 @SuppressWarnings("deprecation")
 public class FakeHttpStack implements HttpStack {
 
@@ -53,6 +52,7 @@ public class FakeHttpStack implements HttpStack {
         try {
             Thread.sleep(SIMULATED_DELAY_MS);
         } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         HttpResponse response= new BasicHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, 200, "OK"));
         //HttpResponse response= new BasicHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, 500, "User shamkhani9@gmail.com has exist."));
@@ -63,7 +63,7 @@ public class FakeHttpStack implements HttpStack {
     }
 
     private List<Header> defaultHeaders() {
-        DateFormat dateFormat = new SimpleDateFormat("EEE, dd mmm yyyy HH:mm:ss zzz");
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("EEE, dd mmm yyyy HH:mm:ss zzz");
         List<Header> tempList= new ArrayList();
         tempList.add(new BasicHeader("Date", dateFormat.format(new Date())));
         tempList.add(new BasicHeader("Server",/* Data below is header info of my server */
@@ -111,8 +111,7 @@ public class FakeHttpStack implements HttpStack {
         String apiName = reqUrl.substring(NetworkManager.prefixURL.length());
         apiName=apiName.replace("/","_");
         String[] arrSplit=apiName.split("_");
-        String fileName= "fake_res_"+getNameOfMethod(request.getMethod())+"_" + arrSplit[0]+"_"+arrSplit[1];
-        return fileName;
+        return "fake_res_"+getNameOfMethod(request.getMethod())+"_" + arrSplit[0]+"_"+arrSplit[1];
     }
 
     private String getNameOfMethod(int requestType) {

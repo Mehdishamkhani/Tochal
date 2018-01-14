@@ -1,8 +1,6 @@
 package org.android.events;
 
-/**
- * Created by Igor Havrylyuk on 07.03.2017.
- */
+
 
 public class ChangeEvent {
 

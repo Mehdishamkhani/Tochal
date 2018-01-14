@@ -1,6 +1,7 @@
 package org.android.dialogs;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,19 +48,22 @@ public class LoadingDialog extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_loading, container);
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCancelable(false);
-        getDialog().setCanceledOnTouchOutside(false);
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        WindowManager.LayoutParams lp = getDialog().getWindow().getAttributes();
-        lp.dimAmount = 0.7f;
+        if (getDialog().getWindow() != null) {
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCancelable(false);
+            getDialog().setCanceledOnTouchOutside(false);
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            WindowManager.LayoutParams lp = getDialog().getWindow().getAttributes();
+            lp.dimAmount = 0.7f;
+        }
 
 
-        TextView tvTitle = (TextView) view.findViewById(R.id.tvLoadingTitle);
+        TextView tvTitle = view.findViewById(R.id.tvLoadingTitle);
         if (title.length() > 0)
             tvTitle.setText(title);
+
         return view;
     }
 

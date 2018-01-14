@@ -1,8 +1,6 @@
 package org.android.events;
 
-/**
- * Created by Igor Havrylyuk on 25.03.2017.
- */
+
 
 public class LocationEvent {
 

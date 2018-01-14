@@ -1,8 +1,5 @@
 package org.android.events;
 
-/**
- * Created by Igor Havrylyuk on 13.03.2017.
- */
 
 public class LoadingStatusEvent {
 

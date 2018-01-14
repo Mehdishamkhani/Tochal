@@ -17,39 +17,38 @@ public class TextViewTypeFace extends android.support.v7.widget.AppCompatTextVie
 
     public TextViewTypeFace(Context context) {
         super(context);
-        initializeViews(context,null);
+        initializeViews(context, null);
     }
 
     public TextViewTypeFace(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initializeViews(context,attrs);
+        initializeViews(context, attrs);
     }
 
 
     public TextViewTypeFace(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initializeViews(context,attrs);
+        initializeViews(context, attrs);
     }
-
-
 
 
     private void initializeViews(Context context, AttributeSet attrs) {
 
-        this.mContext=context;
-        if(attrs!=null)
-        {
+        this.mContext = context;
+        if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextViewTypeFace, 0, 0);
             fontName = a.getString(R.styleable.TextViewTypeFace_fontName);
             a.recycle();
         }
-        if(!isInEditMode())
-        {
+        if (!isInEditMode()) {
             fontName = (fontName != null) ? fontName : "isans";
-            setTypeface(FontHelper.get(context,  fontName ));
+            try {
+                setTypeface(FontHelper.get(context, fontName));
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
         }
     }
-
 
 
 }

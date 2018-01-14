@@ -207,9 +207,9 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
             super(view);
             this.view = view;
 
-            title = (TextView) view.findViewById(R.id.title);
-            icon = (ImageView) view.findViewById(R.id.icon);
-            itemLayer = (LinearLayout) view.findViewById(R.id.item);
+            title = view.findViewById(R.id.title);
+            icon = view.findViewById(R.id.icon);
+            itemLayer = view.findViewById(R.id.item);
 
 
         }

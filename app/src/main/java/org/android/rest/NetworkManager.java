@@ -8,7 +8,7 @@ import com.android.volley.toolbox.Volley;
 public class NetworkManager {
     private static final String TAG = "NetworkManager";
     private static NetworkManager instance = null;
-    public static final String prefixURL = RestUrl.BASE;//http://uifaces.com/api/v1/";
+    public static final String prefixURL = RestUrl.BASE;
     public static int MOCK_SERVER = 1;
     public static int REAL_SERVER = 2;
 

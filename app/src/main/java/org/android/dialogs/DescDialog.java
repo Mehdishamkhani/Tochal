@@ -8,9 +8,6 @@ import android.widget.TextView;
 
 import org.android.R;
 
-/**
- * Created by mehdi on 18/12/2017.
- */
 
 public class DescDialog extends Dialog {
 
@@ -18,7 +15,7 @@ public class DescDialog extends Dialog {
     public Dialog d;
     private String description;
 
-    public DescDialog(Activity a , String description) {
+    public DescDialog(Activity a, String description) {
         super(a, R.style.Theme_Dialog);
         this.c = a;
         this.description = description;
@@ -30,8 +27,9 @@ public class DescDialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_desc);
 
-        TextView desc = (TextView) findViewById(R.id.desc);
-        desc.setText(description);
+        TextView desc = findViewById(R.id.desc);
+        if (description != null)
+            desc.setText(description);
 
     }
 

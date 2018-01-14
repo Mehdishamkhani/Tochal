@@ -15,10 +15,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-/**
- *
- * Created by Igor Havrylyuk on 16.02.2017.
- */
 
 public class Utility {
 
@@ -36,6 +32,7 @@ public class Utility {
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }

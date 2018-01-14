@@ -13,9 +13,7 @@ import org.android.rest.models.ErrorResponse;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by USER on 11/27/2015.
- */
+
 public class NetworkExceptionHandler {
     public int error_number;
     public String error_server_message;
@@ -57,7 +55,6 @@ public class NetworkExceptionHandler {
             Gson g = new Gson();
             neh = new NetworkExceptionHandler();
             try {
-
 
                 ErrorResponse er = g.fromJson(str, ErrorResponse.class);
                 neh.error_number = error.networkResponse.statusCode;

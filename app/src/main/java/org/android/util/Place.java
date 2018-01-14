@@ -6,10 +6,6 @@ import android.view.View;
 import org.android.data.model.PlaceStatus;
 import org.android.data.model.WorkModel;
 
-/**
- * Created by mehdi on 28/12/2017.
- */
-
 public class Place {
 
 
@@ -19,10 +15,7 @@ public class Place {
 
             if (TimeHelper.getStationStatus(placeWorktime.maintenance_start, placeWorktime.maintenance_end)) {
 
-                Log.d("maintenance",placeWorktime.maintenance_description);
-
                 return new PlaceStatus(false, true, placeWorktime.maintenance_description);
-
             }
 
         }

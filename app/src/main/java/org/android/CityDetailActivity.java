@@ -32,10 +32,12 @@ public class CityDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_detail);
         ButterKnife.bind(this);
-
-        head.setText(getIntent().getStringExtra("HEAD"));
-
-        CityDetailFragment fragment = CityDetailFragment.getInstance(getIntent().getStringExtra("TYPE"));
+        try {
+            head.setText(getIntent().getStringExtra(getString(R.string.head)));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        CityDetailFragment fragment = CityDetailFragment.getInstance(getIntent().getStringExtra(getString(R.string.type)));
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.city_detail_container, fragment)
                 .commit();
@@ -50,6 +52,7 @@ public class CityDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+
 
     }
 

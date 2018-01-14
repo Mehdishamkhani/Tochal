@@ -19,18 +19,16 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by USER on 11/26/2015.
- */
+
 public class CustomGsonRequest<T> extends Request<T> {
     private final Gson gson = new Gson();
     private final Class<T> clazz;
     private final Map<String, String> params;
     private final MyNetworkListener<T> listener;
-    public String token="";
+    public String token = "";
     public Context mContext;
-    private boolean needToken=false;
-    public final String TAG="WEBSERVICE";
+    private boolean needToken = false;
+    public final String TAG = "WEBSERVICE";
     private String url;
     private String pass;
     private boolean needAuth = false;
@@ -40,52 +38,47 @@ public class CustomGsonRequest<T> extends Request<T> {
         super(methodType, url, null);
         setRetryPolicy(new DefaultRetryPolicy(200000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         this.clazz = clazz;
-        this.url=url;
+        this.url = url;
         this.params = params;
-        this.listener=listener;
+        this.listener = listener;
     }
 
-    public void setToken(String token, Context mContext)
-    {
-        this.mContext=mContext;
-        this.token=token;
-        this.needToken=true;
+    public void setToken(String token, Context mContext) {
+        this.mContext = mContext;
+        this.token = token;
+        this.needToken = true;
     }
 
 
-    public void setAuth(String user , String pass, Context mContext)
-    {
-        this.mContext=mContext;
-        this.pass=pass;
+    public void setAuth(String user, String pass, Context mContext) {
+        this.mContext = mContext;
+        this.pass = pass;
         this.username = user;
-        this.needAuth=true;
+        this.needAuth = true;
     }
 
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        if(needToken)
-        {
-            Map<String,String> headers=new HashMap<>();
-            headers.put("Authorization", String.format("Bearer %s", String.format("%s",token)));
+        if (needToken) {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Authorization", String.format("Bearer %s", String.format("%s", token)));
             return headers;
-        }else if(needAuth){
+        } else if (needAuth) {
 
             HashMap<String, String> params = new HashMap<String, String>();
-            String creds = String.format("%s:%s",this.username,this.pass);
+            String creds = String.format("%s:%s", this.username, this.pass);
             String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
             params.put("Authorization", auth);
             return params;
-        }
-        else
-        {
+        } else {
             return super.getHeaders();
         }
     }
 
     @Override
     public Map<String, String> getParams() throws AuthFailureError {
-        return  params;
+        return params;
         //return headers != null ? headers : super.getHeaders();
     }
 
@@ -106,21 +99,19 @@ public class CustomGsonRequest<T> extends Request<T> {
 
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
-        T jsonObject=null;
+        T jsonObject;
         try {
-            String json = new String(response.data,HttpHeaderParser.parseCharset(response.headers));
+            String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
 
-            json=json.replace("\"links\":[]","\"links\":null");
+            json = json.replace("\"links\":[]", "\"links\":null");
 
-            Log.d(TAG,"response url="+url+"\n"+json);
+            Log.d(TAG, "response url=" + url + "\n" + json);
             //URLDecoder.decode(json, "utf-8")
-            jsonObject=gson.fromJson(json, clazz);
+            jsonObject = gson.fromJson(json, clazz);
 
-        } catch (UnsupportedEncodingException e) {
-            return Response.error(new ParseError(e));
-        } catch (JsonSyntaxException e) {
+        } catch (UnsupportedEncodingException | JsonSyntaxException e) {
             return Response.error(new ParseError(e));
         }
-            return Response.success(jsonObject,HttpHeaderParser.parseCacheHeaders(response));
+        return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
     }
 }

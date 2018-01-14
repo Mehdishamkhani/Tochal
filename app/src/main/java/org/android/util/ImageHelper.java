@@ -5,10 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-/**
- *
- * Created by Igor Havrylyuk on 11.02.2017.
- */
 
 public class ImageHelper {
 

@@ -1,5 +1,6 @@
 package org.android.adapter;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -17,9 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by Igor Havrylyuk on 17.02.2017.
- */
+
 public class DaysViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private final String date;
@@ -48,6 +47,7 @@ public class DaysViewPagerAdapter extends FragmentStatePagerAdapter {
 
         PeriodsModel periodsModel = mDays.get(position).getHours().get(0);
 
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date d = new Date();
         try {

@@ -1,5 +1,6 @@
 package org.android.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
@@ -56,10 +57,12 @@ public class LoadingLayout extends RelativeLayout {
         }
     }
 
+    @SuppressLint("InflateParams")
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         vError = inflater.inflate(R.layout.row_error, null);
 
         mainLayout = getChildAt(0);
@@ -118,14 +121,14 @@ public class LoadingLayout extends RelativeLayout {
 
     public void setError(String mError) {
         this.mError = mError;
-        TextView tvError = (TextView) vError.findViewById(R.id.tvError);
+        TextView tvError = vError.findViewById(R.id.tvError);
         tvError.setText(mError);
         SetState(STATE_SHOW_Error);
     }
     public void setError(String mError, boolean hasReload) {
         this.mError = mError;
-        TextView tvError = (TextView) vError.findViewById(R.id.tvError);
-        IconTextView reload = (IconTextView) vError.findViewById(R.id.reload);
+        TextView tvError = vError.findViewById(R.id.tvError);
+        IconTextView reload = vError.findViewById(R.id.reload);
 
         if (hasReload)
             reload.setVisibility(View.VISIBLE);

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -92,15 +93,14 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_weather, container, false);
         ButterKnife.bind(this, v);
 
-
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        if (getActivity() != null)
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         loading.SetState(LoadingLayout.STATE_LOADING);
         rf.setOnRefreshListener(this);
@@ -117,7 +117,6 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                 rr.getWeathers(new getWeatherResult(weather.this));
                 places = result;
 
-
             }
 
             @Override
@@ -132,6 +131,7 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         windView.setWindText(getString(R.string.wind));
         windView.setPressureUnit(getString(R.string.meter));
         windView.setBarometerText(getString(R.string.pflevel));
+        windView.setPressure(0);
         windView.setTrendType(TrendType.NONE);
         windView.setTypeface(FontHelper.get(getActivity(), getString(R.string.isans)));
         windView.start();
@@ -229,7 +229,6 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                 rr.getWeathers(new getWeatherResult(weather.this));
                 places = result;
 
-
             }
 
             @Override
@@ -242,56 +241,75 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     private class getWeatherResult implements MyNetworkListener<ForecastModel> {
 
 
-        public getWeatherResult(weather weather) {
+        getWeatherResult(weather weather) {
         }
 
         @Override
         public void getResult(ForecastModel result) {
 
-            loading.SetState(LoadingLayout.STATE_SHOW_DATA);
 
-            forecast = result.getForecast();
-            Gson gson = new Gson();
-            String json = gson.toJson(result);
-            PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
-                    .putString(getString(R.string.pref_data_key), json).apply();
+            if (result != null && result.getForecast().getPeriods().size() > 0) {
 
-            mAdapter.setWeather(result.getForecast());
+                try {
 
-            if (places != null) {
+                    forecast = result.getForecast();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(result);
+                    PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
+                            .putString(getString(R.string.pref_data_key), json).apply();
+                    mAdapter.setWeather(result.getForecast());
 
-                int i = 0;
-                int radius = Item.NO_RADIUS;
-                for (PlaceModel placeModel : places.getData()) {
+                } catch (Exception e) {
 
-                    if (places.getData().size() == 1)
-                        radius = Item.RADIUS;
-                    else {
-                        if (i == 0)
-                            radius = Item.TOP_RADIUS;
-                        else if (i + 1 == places.getData().size())
-                            radius = Item.BOT_RADIUS;
-                    }
-
-                    addItem(new Item(placeModel.getName(), R.drawable.close, placeModel.getHeight(), radius));
-                    i++;
-                    radius = Item.NO_RADIUS;
-
+                    e.printStackTrace();
                 }
 
 
-                //default
-                list_head.setText(places.getData().get(0).getPlace_type_label());
-                mAdapter.setFirstSelected(0);
-                type = places.getData().get(0).getHeight();
-                windView.setPressure(forecast.getPeriods().get(0).pflevel);
-                windView.setWindSpeed(WeatherType.getMMM(type, result.getForecast().getPeriods().get(0)).pwind);
-                setWeatherViewStatus(WeatherType.getMMM(type, result.getForecast().getPeriods().get(0)));
-                mainhead.setText(mAdapter.getItems().get(0).getTitle());
+                if (places != null && places.getData().size() > 0) {
+
+                    int i = 0;
+                    int radius = Item.NO_RADIUS;
+                    for (PlaceModel placeModel : places.getData()) {
+
+                        if (places.getData().size() == 1)
+                            radius = Item.RADIUS;
+                        else {
+                            if (i == 0)
+                                radius = Item.TOP_RADIUS;
+                            else if (i + 1 == places.getData().size())
+                                radius = Item.BOT_RADIUS;
+                        }
+
+                        addItem(new Item(placeModel.getName(), R.drawable.close, placeModel.getHeight(), radius));
+                        i++;
+                        radius = Item.NO_RADIUS;
+
+                    }
 
 
-                rf.setRefreshing(false);
+                    //default
+                    try {
+                        if (places.getData().size() > 0) {
+                            list_head.setText(places.getData().get(0).getPlace_type_label());
+                            mAdapter.setFirstSelected(0);
+                            type = places.getData().get(0).getHeight();
+                            windView.setPressure(forecast.getPeriods().get(0).pflevel);
+                            windView.setWindSpeed(WeatherType.getMMM(type, result.getForecast().getPeriods().get(0)).pwind);
+                            setWeatherViewStatus(WeatherType.getMMM(type, result.getForecast().getPeriods().get(0)));
+                            mainhead.setText(mAdapter.getItems().get(0).getTitle());
+                        }
+                    } catch (IndexOutOfBoundsException | NullPointerException e) {
+
+                        e.printStackTrace();
+                    }
+
+                }
+
             }
+
+            rf.setRefreshing(false);
+            loading.SetState(LoadingLayout.STATE_SHOW_DATA);
+
         }
 
 
@@ -319,7 +337,6 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
             case "heavy_snow":
             case "snow_shwrs":
                 mWeatherView.setWeather(Constants.WeatherStatus.SNOW);
-
                 break;
 
             case "light_rain":

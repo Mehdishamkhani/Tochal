@@ -7,6 +7,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <permission
         android:name="com.example.permission.MAPS_RECEIVE"
@@ -22,6 +23,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:fullBackupContent="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -31,22 +33,29 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCEhli55-QCIjApuT4kGPHwl0dXGcu9-AE" />
+            android:value="AIzaSyCAxytpWoL7RPl-cfHOWEeDQgQsZCSfA5U" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7c0a7784ebacc17ede78b7a524b47fbafc2badfd"
+            />
+
 
         <activity
             android:name=".IntroActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_intro" />
+
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".CityDetailActivity" />
 
 

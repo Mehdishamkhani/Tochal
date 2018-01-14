@@ -6,10 +6,6 @@ import android.graphics.BitmapFactory;
 
 import java.io.InputStream;
 
-/**
- *
- * Created by Igor Havrylyuk on 11.02.2017.
- */
 
 public class ImageUtils  {
     private Context mContext;

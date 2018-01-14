@@ -98,4 +98,11 @@
     <string name="subject_fa">موضوع</string>
     <string name="msg_sending_failed">خطا در ارسال پیام</string>
     <string name="msg_sending_ok">با تشکر پیام ارسال شد</string>
+    <string name="telecabin_station">ایستگاه تلکابین</string>
+    <string name="remaining_time">مانده تا پایان ساعت کاری</string>
+    <string name="photo_desc">عکس</string>
+    <string name="time_desc">زمان</string>
+    <string name="contact_desc">تماس</string>
+    <string name="weather_state_desc">وضعیت هوا</string>
+
 </resources>

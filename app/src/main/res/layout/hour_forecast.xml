@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
+    android:focusable="true"
     android:layout_margin="@dimen/activity_horizontal_margin"
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center"
@@ -21,7 +22,7 @@
         android:layout_marginTop="@dimen/primary_text_margin"
         android:layout_weight="0.5"
         android:gravity="center"
-        android:textAppearance="?attr/textAppearanceListItem"
+        android:textAppearance="?android:attr/textAppearanceListItem"
         android:textSize="@dimen/subtext_size"
         app:fontName="isans"
         tools:text="21:00" />
@@ -37,7 +38,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
-            android:contentDescription="test"
+            android:contentDescription="@string/weather_state_desc"
             fresco:actualImageScaleType="fitCenter"
             fresco:fadeDuration="300"
             fresco:progressBarAutoRotateInterval="1000"
@@ -61,7 +62,7 @@
             android:layout_marginLeft="@dimen/primary_text_margin"
             android:layout_marginRight="@dimen/primary_text_margin"
             android:layout_marginTop="@dimen/subtext_size_bottom_padding"
-            android:textAppearance="?attr/textAppearanceListItem"
+            android:textAppearance="?android:attr/textAppearanceListItem"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp"
             tools:text="+12C" />
@@ -79,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/wind"
                 android:layout_marginRight="@dimen/primary_text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
+                android:textAppearance="?android:attr/textAppearanceListItem"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="@dimen/subtext_size" />
 
@@ -87,7 +88,7 @@
                 android:id="@+id/wind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceListItem"
+                android:textAppearance="?android:attr/textAppearanceListItem"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="@dimen/subtext_size"
                 tools:text="4.58 m/s,Nw" />
@@ -108,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/humidity"
                 android:layout_marginRight="@dimen/primary_text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
+                android:textAppearance="?android:attr/textAppearanceListItem"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="@dimen/subtext_size" />
 
@@ -116,7 +117,7 @@
                 android:id="@+id/humidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceListItem"
+                android:textAppearance="?android:attr/textAppearanceListItem"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="@dimen/subtext_size"
                />

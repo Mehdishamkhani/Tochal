@@ -3,7 +3,9 @@ package org.android.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +72,25 @@ public class WorkItemRecyclerViewAdapter extends RecyclerView.Adapter<WorkItemRe
             holder.itemLayer.setPadding(20, 20, 20, 10);
         } else {
 
+            switch (item.getRadius()) {
+                case Item.BOT_RADIUS:
+                    holder.itemLayer.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_white_radius_bot));
+                    break;
+                case Item.NO_RADIUS:
+                    holder.itemLayer.setBackground(ContextCompat.getDrawable(context, R.drawable.list_border));
+                    break;
+                case Item.RADIUS:
+                    holder.itemLayer.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_white_radius));
+                    break;
+                case Item.TOP_RADIUS:
+                    holder.itemLayer.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_white_radius_top));
+                    break;
+                default:
+                    holder.itemLayer.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_white_radius));
+
+            }
+
+
             String _t = item.getWmodel().open_time;
             _t += " الی ";
             _t += item.getWmodel().close_time;
@@ -98,9 +119,9 @@ public class WorkItemRecyclerViewAdapter extends RecyclerView.Adapter<WorkItemRe
             super(view);
             this.view = view;
 
-            title = (TextView) view.findViewById(R.id.title);
-            icon = (ImageView) view.findViewById(R.id.icon);
-            itemLayer = (LinearLayout) view.findViewById(R.id.item);
+            title = view.findViewById(R.id.title);
+            icon = view.findViewById(R.id.icon);
+            itemLayer = view.findViewById(R.id.item);
 
 
         }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -54,9 +55,6 @@ public class feedback extends Fragment implements Validator.ValidationListener {
     public int CallClickCounter = 0;
     private Validator validator;
 
-    public feedback() {
-
-    }
 
     @BindView(R.id.mail)
     RelativeLayout mail;
@@ -72,7 +70,7 @@ public class feedback extends Fragment implements Validator.ValidationListener {
 
     @BindView(R.id.phone)
     @NotEmpty(message = "پر کردن این فیلد اجباری است")
-    @Digits(integer = 15,message = "فقط اعداد مجاز هستند")
+    @Digits(integer = 15, message = "فقط اعداد مجاز هستند")
     @Length(min = 5, max = 12, message = "عنوان باید بیشتر از پنج حرف باشد")
     EditText phone;
 
@@ -85,11 +83,14 @@ public class feedback extends Fragment implements Validator.ValidationListener {
     @NotEmpty(message = "پر کردن این فیلد اجباری است")
     @Length(min = 5, max = 300, message = "متن پیام باید بین 5 تا 300 حرف باشد")
     EditText message;
+    private boolean Lock = false;
 
+    public feedback() {
+
+    }
 
     public static feedback newInstance() {
-        feedback fragment = new feedback();
-        return fragment;
+        return new feedback();
     }
 
     @Override
@@ -99,7 +100,7 @@ public class feedback extends Fragment implements Validator.ValidationListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_feedback, container, false);
 
@@ -113,6 +114,9 @@ public class feedback extends Fragment implements Validator.ValidationListener {
             @Override
             public void onClick(View view) {
 
+
+                if (Lock)
+                    return;
 
                 MailClickCounter = 0;
                 CallClickCounter++;
@@ -131,6 +135,7 @@ public class feedback extends Fragment implements Validator.ValidationListener {
                         @Override
                         public void onAnimationStart(Animation animation) {
 
+                            Lock = true;
                         }
 
                         @Override
@@ -138,6 +143,7 @@ public class feedback extends Fragment implements Validator.ValidationListener {
 
                             ctxt.setVisibility(View.VISIBLE);
                             //call.setTypeface(FontHelper.get(getActivity(),"isans"));
+                            Lock = false;
                         }
 
                         @Override
@@ -148,9 +154,7 @@ public class feedback extends Fragment implements Validator.ValidationListener {
                     call.startAnimation(a);
 
 
-                }
-
-                if (CallClickCounter >= 2) {
+                } else {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     callIntent.setData(Uri.parse(getString(R.string.tel)));
                     startActivity(callIntent);
@@ -165,16 +169,12 @@ public class feedback extends Fragment implements Validator.ValidationListener {
             @Override
             public void onClick(View view) {
 
+
+                if (Lock)
+                    return;
+
                 CallClickCounter = 0;
                 MailClickCounter++;
-
-                if (MailClickCounter >= 2) {
-
-
-                    validator.validate();
-
-
-                }
 
 
                 if (MailClickCounter < 2) {
@@ -188,7 +188,7 @@ public class feedback extends Fragment implements Validator.ValidationListener {
                     a2.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
-
+                            Lock = true;
                         }
 
                         @Override
@@ -196,6 +196,7 @@ public class feedback extends Fragment implements Validator.ValidationListener {
 
                             mtxt.setVisibility(View.VISIBLE);
                             //mail.setTypeface(FontHelper.get(getActivity(),"isans"));
+                            Lock = false;
 
                         }
 
@@ -208,7 +209,8 @@ public class feedback extends Fragment implements Validator.ValidationListener {
                     mail.startAnimation(a2);
 
 
-                }
+                } else
+                    validator.validate();
 
 
             }
@@ -244,6 +246,7 @@ public class feedback extends Fragment implements Validator.ValidationListener {
 
         MailClickCounter = 1;
         CallClickCounter = 0;
+        Lock = false;
     }
 
     @Override

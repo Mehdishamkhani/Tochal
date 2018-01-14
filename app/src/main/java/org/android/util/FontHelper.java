@@ -7,9 +7,7 @@ import android.view.View;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by USER on 11/23/2015.
- */
+
 public class FontHelper {
     private static final Map<String, Typeface> TYPEFACES = new HashMap<>();
 

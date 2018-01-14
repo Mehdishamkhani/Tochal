@@ -1,8 +1,5 @@
 package org.android.rest;
 
-/**
- * Created by mehdi on 24/12/2017.
- */
 
 abstract class RestUrl {
 

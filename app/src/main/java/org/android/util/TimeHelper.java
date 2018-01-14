@@ -1,7 +1,5 @@
 package org.android.util;
 
-import android.util.Log;
-
 import org.android.data.model.TimeModel;
 
 import java.text.SimpleDateFormat;
@@ -9,9 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by mehdi on 25/12/2017.
- */
 
 public class TimeHelper {
 

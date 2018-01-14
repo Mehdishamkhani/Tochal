@@ -26,9 +26,6 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Abbas on 22/12/2015.
- */
 
 public class PhotoMultipartRequest<T> extends com.android.volley.Request<T> {
 
@@ -91,21 +88,6 @@ public class PhotoMultipartRequest<T> extends com.android.volley.Request<T> {
     }
 
 
-//    @Override
-//    public Map<String, String> getHeaders() throws AuthFailureError {
-//        Map<String, String> headers = super.getHeaders();
-//
-//        if (headers == null
-//                || headers.equals(Collections.emptyMap())) {
-//            headers = new HashMap<String, String>();
-//        }
-//
-//        headers.put("Accept", "application/json");
-//
-//        return headers;
-//    }
-
-
 
     private void buildMultipartEntity(){
         if(params!=null)
@@ -125,8 +107,7 @@ public class PhotoMultipartRequest<T> extends com.android.volley.Request<T> {
 
     @Override
     public String getBodyContentType(){
-        String contentTypeHeader = mBuilder.build().getContentType().getValue();
-        return contentTypeHeader;
+        return mBuilder.build().getContentType().getValue();
     }
 
     @Override

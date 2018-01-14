@@ -13,7 +13,7 @@ public class Item {
 
 
     @SerializedName("radius")
-    private int radius = NO_RADIUS;
+    private int radius ;
 
     @SerializedName("type")
     private String type;
@@ -85,7 +85,11 @@ public class Item {
         this.wmodel = wmodel;
         this.isHeader = isHeader;
     }
-
+    public Item(WorkModel wmodel,int radius) {
+        this.wmodel = wmodel;
+        this.isHeader = false;
+        this.radius = radius;
+    }
     public WorkModel getWmodel() {
         return wmodel;
     }
@@ -130,7 +134,7 @@ public class Item {
         return isHeader;
     }
 
-    public int getRadius() {
-        return radius;
-    }
+    public int getRadius() {return this.radius;}
+
+    public void setRadius(int radius) {this.radius = radius;}
 }

@@ -1,7 +1,5 @@
 package org.android;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,10 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
@@ -25,7 +20,6 @@ import org.android.dialogs.LoadingDialog;
 import org.android.events.DimissLoadingDialog;
 import org.android.events.ShowLoadingDialog;
 import org.android.events.UpdateApk;
-import org.android.util.LocaleHelper;
 import org.android.util.SettingsManager;
 import org.android.util.Utils;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,20 +47,14 @@ public class BaseActivity extends AppCompatActivity {
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 SettingsManager sm = new SettingsManager(getApplicationContext());
                 query.setFilterById(sm.getIdDOwnload());
+                assert dm != null;
                 Cursor c = dm.query(query);
                 if (c.moveToFirst()) {
                     int uriColumnIndex = c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI);
 
                     int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
                     if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
-
-//                        String u = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-//                        Intent a = new Intent(Intent.ACTION_VIEW);
-//                        a.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/download/" + "app.apk")), "application/vnd.android.package-archive");
-//                        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(a);
                         install();
-                        //Toast.makeText(BaseActivity.this, "OK DOwnload", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -94,12 +82,6 @@ public class BaseActivity extends AppCompatActivity {
     public void onStop() {
         this.mIsActvityShow = false;
 
-//        NetworkManager.getInstance().requestQueue.cancelAll(new RequestQueue.RequestFilter() {
-//            @Override
-//            public boolean apply(Request<?> request) {
-//                return true;
-//            }
-//        });
         unregisterReceiver(receiver);
         EventBus.getDefault().unregister(this);
         super.onStop();
@@ -124,15 +106,12 @@ public class BaseActivity extends AppCompatActivity {
         DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         SettingsManager sm = new SettingsManager(getApplicationContext());
         query.setFilterById(sm.getIdDOwnload());
+        assert dm != null;
         Cursor c = dm.query(query);
         if (c.moveToFirst()) {
             int columnIndex = c
                     .getColumnIndex(DownloadManager.COLUMN_STATUS);
-            if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
-
-                return true;
-            } else
-                return false;
+            return DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex);
         }
         return false;
     }
@@ -143,9 +122,6 @@ public class BaseActivity extends AppCompatActivity {
         SettingsManager sm = new SettingsManager(getApplicationContext());
         boolean lastDownloadState = checkApkDownloadOK(sm.getIdDOwnload());
         int lastVersionCode = sm.getVersionCodeDownload();
-
-
-        // lastDownloadState=false;
 
 
         if (BuildConfig.VERSION_CODE < Integer.valueOf(erf.mConfig.latest_version))//BuildConfig.VERSION_CODE<erf.mConfig.android.latest
@@ -174,20 +150,16 @@ public class BaseActivity extends AppCompatActivity {
                         .contentGravity(GravityEnum.START)
                         .negativeText(R.string.dialog_no)
                         .show();
-                //Toast.makeText(BaseActivity.this, "نسخه ی جدید آماده هست،اپدیت کنید.", Toast.LENGTH_SHORT).show();
-                //Log.w("BaseActivity", "Non Force Update");
+
             } else {
                 File a = new File(Environment.getExternalStorageDirectory() + Utils.App_Folder_Name + Utils.App_Folder_Update + Utils.Apk_download_Name);
                 if (lastDownloadState && lastVersionCode == Integer.valueOf(erf.mConfig.latest_version) && a.exists())//lastDownloadState&&lastVersionCode==erf.mConfig.android.latest
                 {
                     install();
-                    //Toast.makeText(BaseActivity.this, "Intall ghabli Force Update", Toast.LENGTH_SHORT).show();
                 } else {
-                    //Toast.makeText(BaseActivity.this, "download force", Toast.LENGTH_SHORT).show();
                     update(erf);
                 }
 
-                //Log.w("BaseActivity", "Force Update");
             }
         }
 
@@ -223,9 +195,11 @@ public class BaseActivity extends AppCompatActivity {
             fileDir.mkdirs();
             request.setDestinationInExternalPublicDir(localdownloadPath, Utils.Apk_download_Name);
         }
-        long enqueue = dm.enqueue(request);
+        long enqueue = 0;
+        if (dm != null) {
+            enqueue = dm.enqueue(request);
+        }
         sm.setDownloadApk(Integer.valueOf(erf.mConfig.latest_version), enqueue);
-        //Toast.makeText(BaseActivity.this, "Download Force Update", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -248,6 +222,7 @@ public class BaseActivity extends AppCompatActivity {
 
         File folder1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + filename);
         return folder1.delete();
+
     }
 }
 

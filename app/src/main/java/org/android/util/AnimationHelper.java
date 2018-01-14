@@ -1,13 +1,9 @@
 package org.android.util;
 
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.view.animation.Transformation;
 import android.widget.LinearLayout;
 
-/**
- * Created by mehdi on 29/12/2017.
- */
 
 public class AnimationHelper extends android.view.animation.Animation {
 
