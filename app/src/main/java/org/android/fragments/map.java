@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -69,7 +71,29 @@ public class map extends Fragment implements OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(35.8578595, 51.3843905), 12.0f));
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
 
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                View v = getLayoutInflater().inflate(R.layout.windowlayout, null);
+
+                LatLng latLng = marker.getPosition();
+                TextView title = v.findViewById(R.id.title);
+                //TextView latlng = v.findViewById(R.id.latlng);
+                TextView desc = v.findViewById(R.id.desc);
+
+                title.setText(marker.getTitle());
+                //latlng.setText(String.format("%s,%s", String.valueOf(latLng.latitude), String.valueOf(latLng.longitude)));
+                desc.setText(marker.getSnippet());
+
+                return v;
+            }
+        });
         String ds = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getString(getString(R.string.place_data_key), getString(R.string.empty));
 
@@ -82,9 +106,8 @@ public class map extends Fragment implements OnMapReadyCallback {
                 for (PlaceModel placesModel : data.getData()) {
 
                     LatLng latLng = new LatLng(Double.valueOf(placesModel.getLat()), Double.valueOf(placesModel.getLng()));
-                    mMap.addMarker(new MarkerOptions().position(latLng).title(placesModel.getName()));
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(placesModel.getName()).snippet(placesModel.getDescription()));
 
-                    Log.d(this.getTag(), placesModel.getLat() + " - " + placesModel.getLng());
                 }
 
 
@@ -100,16 +123,22 @@ public class map extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, v);
 
         try {
+
+            if (mMap != null)
+                mMap.clear();
+
             final SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
-        } catch (RuntimeException e) {
+
+        } catch (OutOfMemoryError | RuntimeException e) {
             e.printStackTrace();
         }
+
         return v;
     }
 
@@ -126,5 +155,9 @@ public class map extends Fragment implements OnMapReadyCallback {
 
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+    }
 
 }
