@@ -13,6 +13,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,41 +108,6 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         rf.setColorSchemeResources(R.color.colorAccent);
 
 
-        final RequestRepository rr = new RequestRepository(getActivity(), weather.class.getSimpleName());
-
-
-        rr.getStations(new MyNetworkListener<PlacesModel>() {
-            @Override
-            public void getResult(PlacesModel result) {
-
-                rr.getWeathers(new getWeatherResult(weather.this));
-                places = result;
-
-            }
-
-            @Override
-            public void getException(NetworkExceptionHandler error) {
-
-            }
-        });
-
-
-        windView.setWindSpeed(0);
-        windView.setWindSpeedUnit(getString(R.string.wind_unit));
-        windView.setWindText(getString(R.string.wind));
-        windView.setPressureUnit(getString(R.string.meter));
-        windView.setBarometerText(getString(R.string.pflevel));
-        windView.setPressure(0);
-        windView.setTrendType(TrendType.NONE);
-        windView.setTypeface(FontHelper.get(getActivity(), getString(R.string.isans)));
-        windView.start();
-        windView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToDetail();
-            }
-        });
-
         mAdapter = new WeatherItemRecyclerViewAdapter(getActivity(), new ArrayList<Item>());
         mAdapter.setListener(new WeatherItemRecyclerViewAdapter.OnItemLongClickListener() {
             @Override
@@ -161,6 +127,46 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         stations.setAdapter(mAdapter);
         mAdapter.clear();
         mAdapter.notifyDataSetChanged();
+
+
+        windView.setWindSpeed(0);
+        windView.setWindSpeedUnit(getString(R.string.wind_unit));
+        windView.setWindText(getString(R.string.wind));
+        windView.setPressureUnit(getString(R.string.meter));
+        windView.setBarometerText(getString(R.string.pflevel));
+        windView.setPressure(0);
+        windView.setTrendType(TrendType.NONE);
+        windView.setTypeface(FontHelper.get(getActivity(), getString(R.string.isans)));
+        windView.start();
+        windView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToDetail();
+            }
+        });
+
+
+        if (places != null && places.getData().size() > 0 && forecast != null) {
+
+            showingDataOpt();
+
+        } else {
+            final RequestRepository rr = new RequestRepository(getActivity(), weather.class.getSimpleName());
+            rr.getStations(new MyNetworkListener<PlacesModel>() {
+                @Override
+                public void getResult(PlacesModel result) {
+
+                    rr.getWeathers(new getWeatherResult(weather.this));
+                    places = result;
+
+                }
+
+                @Override
+                public void getException(NetworkExceptionHandler error) {
+
+                }
+            });
+        }
 
 
         loading.setOnClickListener(new View.OnClickListener() {
@@ -250,65 +256,23 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 
             if (result != null && result.getForecast().getPeriods().size() > 0) {
 
+                forecast = result.getForecast();
+
                 try {
 
-                    forecast = result.getForecast();
                     Gson gson = new Gson();
                     String json = gson.toJson(result);
                     PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
                             .putString(getString(R.string.pref_data_key), json).apply();
-                    mAdapter.setWeather(result.getForecast());
+
+                    showingDataOpt();
 
                 } catch (Exception e) {
 
                     e.printStackTrace();
                 }
 
-
-                if (places != null && places.getData().size() > 0) {
-
-                    int i = 0;
-                    int radius = Item.NO_RADIUS;
-                    for (PlaceModel placeModel : places.getData()) {
-
-                        if (places.getData().size() == 1)
-                            radius = Item.RADIUS;
-                        else {
-                            if (i == 0)
-                                radius = Item.TOP_RADIUS;
-                            else if (i + 1 == places.getData().size())
-                                radius = Item.BOT_RADIUS;
-                        }
-
-                        addItem(new Item(placeModel.getName(), R.drawable.close, placeModel.getHeight(), radius));
-                        i++;
-                        radius = Item.NO_RADIUS;
-
-                    }
-
-
-                    //default
-                    try {
-                        if (places.getData().size() > 0) {
-                            list_head.setText(places.getData().get(0).getPlace_type_label());
-                            mAdapter.setFirstSelected(0);
-                            type = places.getData().get(0).getHeight();
-                            windView.setPressure(forecast.getPeriods().get(0).pflevel);
-                            windView.setWindSpeed(WeatherType.getMMM(type, result.getForecast().getPeriods().get(0)).pwind);
-                            setWeatherViewStatus(WeatherType.getMMM(type, result.getForecast().getPeriods().get(0)));
-                            mainhead.setText(mAdapter.getItems().get(0).getTitle());
-                        }
-                    } catch (IndexOutOfBoundsException | NullPointerException e) {
-
-                        e.printStackTrace();
-                    }
-
-                }
-
             }
-
-            rf.setRefreshing(false);
-            loading.SetState(LoadingLayout.STATE_SHOW_DATA);
 
         }
 
@@ -328,6 +292,58 @@ public class weather extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 
         }
     }
+
+    private void showingDataOpt() {
+
+        mAdapter.setWeather(forecast);
+
+        if (places != null && places.getData().size() > 0) {
+
+            int i = 0;
+            int radius = Item.NO_RADIUS;
+            for (PlaceModel placeModel : places.getData()) {
+
+                if (places.getData().size() == 1)
+                    radius = Item.RADIUS;
+                else {
+                    if (i == 0)
+                        radius = Item.TOP_RADIUS;
+                    else if (i + 1 == places.getData().size())
+                        radius = Item.BOT_RADIUS;
+                }
+
+                addItem(new Item(placeModel.getName(), R.drawable.close, placeModel.getHeight(), radius));
+                i++;
+                radius = Item.NO_RADIUS;
+
+            }
+
+
+            //default
+            try {
+                if (places.getData().size() > 0) {
+                    list_head.setText(places.getData().get(0).getPlace_type_label());
+                    mAdapter.setFirstSelected(0);
+                    type = places.getData().get(0).getHeight();
+                    windView.setPressure(forecast.getPeriods().get(0).pflevel);
+                    windView.setWindSpeed(WeatherType.getMMM(type, forecast.getPeriods().get(0)).pwind);
+                    setWeatherViewStatus(WeatherType.getMMM(type, forecast.getPeriods().get(0)));
+                    mainhead.setText(mAdapter.getItems().get(0).getTitle());
+                }
+            } catch (IndexOutOfBoundsException | NullPointerException e) {
+
+                e.printStackTrace();
+            }
+
+        }
+
+
+        rf.setRefreshing(false);
+        mAdapter.notifyDataSetChanged();
+        loading.SetState(LoadingLayout.STATE_SHOW_DATA);
+
+    }
+
 
     private void setWeatherViewStatus(MMMModel mmmModel) {
 

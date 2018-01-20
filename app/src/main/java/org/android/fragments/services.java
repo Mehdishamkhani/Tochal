@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -102,6 +103,7 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
     String description;
     private ArrayList<WorkModel> work;
     private int place_id = 0;
+    private PlacesModel places;
 
 
     public services() {
@@ -113,7 +115,10 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -197,12 +202,30 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
         });
 
 
-        RequestRepository rr = new RequestRepository(getActivity(), services.class.getSimpleName());
-        rr.getPlaces(new services.getPlacesResult(services.this));
+        if (places != null && places.getData().size() > 0)
+            showingDataOp(places);
+        else {
+            RequestRepository rr = new RequestRepository(getActivity(), services.class.getSimpleName());
+            rr.getPlaces(new services.getPlacesResult(services.this));
+        }
 
         return view;
     }
 
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (places != null)
+            outState.putParcelable("data", (Parcelable) places);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -246,93 +269,7 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
                 return;
             }
 
-            PlaceModel def = result.getData().get(0);
-            mainhead.setText(def.getName() != null ? def.getName() : "");
-            phone = def.getPhone_number();
-            description = def.getDescription();
-            work = def.getWork_times();
-            place_id = def.getId();
-
-            int day = PersianDate.persianDayOfWeek();
-
-            if (work.size() > 0 && getActivity() != null) {
-                // get today work time
-                WorkModel todayWork = work.get(day);
-                Log.d("worksize", work.size() + "");
-
-                // get today place status
-                PlaceStatus dps = Place.getPlaceStatus(todayWork);
-
-                // handle maintenance mode
-                TimeModel timeModel;
-                String statusText;
-                if (dps.isMaintenance()) {
-                    subhead.setVisibility(View.VISIBLE);
-                    subhead.setText(dps.getMaintenanceDesc() != null ? dps.getMaintenanceDesc() : "");
-                    timeModel = TimeHelper.compareDates(todayWork.maintenance_start, todayWork.maintenance_end);
-                    statusText = getString(R.string.place_status3);
-                } else {
-                    timeModel = TimeHelper.compareDates(todayWork.open_time, todayWork.close_time);
-                    statusText = getString(timeModel.getType() == 1 ? R.string.place_status1 : R.string.place_status2);
-                }
-
-                cdw.start(timeModel.getRemainingTime());
-                txtstatus.setText(statusText);
-                collapsingToolbarLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), (dps.isOpen()) ? R.color.green_bg : R.color.red_bg));
-
-            }
-
-
-            int typeid = 0;
-            int radius = Item.NO_RADIUS;
-            int i = 0;
-
-            for (PlaceModel place : result.getData()) {
-
-                WorkModel placeWorktime = place.getWork_times().get(day);
-
-
-                if (typeid != place.getPlace_type_id()) {
-
-                    addItem(new Item(place, true));
-                    radius = Item.TOP_RADIUS;
-
-                }
-
-                try {
-
-                    if (result.getData().size() == i + 1) {
-
-                        if (radius == Item.NO_RADIUS)
-                            radius = Item.BOT_RADIUS;
-                        else
-                            radius = Item.RADIUS;
-                    } else {
-
-                        if (radius == Item.NO_RADIUS
-                                && result.getData().size() != i + 1 && !place.getPlace_type_label().equalsIgnoreCase(result.getData().get(i + 1).getPlace_type_label()))
-                            radius = Item.BOT_RADIUS;
-
-                        else if (radius == Item.TOP_RADIUS && !place.getPlace_type_label().equalsIgnoreCase(result.getData().get(i + 1).getPlace_type_label()))
-                            radius = Item.RADIUS;
-
-                    }
-
-                } catch (IndexOutOfBoundsException e) {
-                    e.printStackTrace();
-                }
-
-
-                addItem(new Item(place, Place.getPlaceStatus(placeWorktime).isOpen() ? 1 : 0, false, radius));
-
-                i++;
-                radius = Item.NO_RADIUS;
-                typeid = place.getPlace_type_id();
-            }
-
-
-            if (adp.getItemCount() > 0)
-                adp.setFirstSelected(1);
+            showingDataOp(result);
 
             // store new places data
             try {
@@ -342,9 +279,6 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            rf.setRefreshing(false);
-            loading.SetState(LoadingLayout.STATE_SHOW_DATA);
 
         }
 
@@ -357,6 +291,103 @@ public class services extends Fragment implements View.OnClickListener, SwipeRef
 
         }
 
+    }
+
+    private void showingDataOp(PlacesModel result) {
+
+
+        PlaceModel def = result.getData().get(0);
+        places = result;
+        mainhead.setText(def.getName() != null ? def.getName() : "");
+        phone = def.getPhone_number();
+        description = def.getDescription();
+        work = def.getWork_times();
+        place_id = def.getId();
+
+        int day = PersianDate.persianDayOfWeek();
+
+        if (work.size() > 0 && getActivity() != null) {
+            // get today work time
+            WorkModel todayWork = work.get(day);
+            Log.d("worksize", work.size() + "");
+
+            // get today place status
+            PlaceStatus dps = Place.getPlaceStatus(todayWork);
+
+            // handle maintenance mode
+            TimeModel timeModel;
+            String statusText;
+            if (dps.isMaintenance()) {
+                subhead.setVisibility(View.VISIBLE);
+                subhead.setText(dps.getMaintenanceDesc() != null ? dps.getMaintenanceDesc() : "");
+                timeModel = TimeHelper.compareDates(todayWork.maintenance_start, todayWork.maintenance_end);
+                statusText = getString(R.string.place_status3);
+            } else {
+                timeModel = TimeHelper.compareDates(todayWork.open_time, todayWork.close_time);
+                statusText = getString(timeModel.getType() == 1 ? R.string.place_status1 : R.string.place_status2);
+            }
+
+            cdw.start(timeModel.getRemainingTime());
+            txtstatus.setText(statusText);
+            collapsingToolbarLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), (dps.isOpen()) ? R.color.green_bg : R.color.red_bg));
+
+        }
+
+
+        int typeid = 0;
+        int radius = Item.NO_RADIUS;
+        int i = 0;
+
+        for (PlaceModel place : result.getData()) {
+
+            WorkModel placeWorktime = place.getWork_times().get(day);
+
+
+            if (typeid != place.getPlace_type_id()) {
+
+                addItem(new Item(place, true));
+                radius = Item.TOP_RADIUS;
+
+            }
+
+            try {
+
+                if (result.getData().size() == i + 1) {
+
+                    if (radius == Item.NO_RADIUS)
+                        radius = Item.BOT_RADIUS;
+                    else
+                        radius = Item.RADIUS;
+                } else {
+
+                    if (radius == Item.NO_RADIUS
+                            && result.getData().size() != i + 1 && !place.getPlace_type_label().equalsIgnoreCase(result.getData().get(i + 1).getPlace_type_label()))
+                        radius = Item.BOT_RADIUS;
+
+                    else if (radius == Item.TOP_RADIUS && !place.getPlace_type_label().equalsIgnoreCase(result.getData().get(i + 1).getPlace_type_label()))
+                        radius = Item.RADIUS;
+
+                }
+
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+
+
+            addItem(new Item(place, Place.getPlaceStatus(placeWorktime).isOpen() ? 1 : 0, false, radius));
+
+            i++;
+            radius = Item.NO_RADIUS;
+            typeid = place.getPlace_type_id();
+        }
+
+
+        if (adp.getItemCount() > 0)
+            adp.setFirstSelected(1);
+
+
+        rf.setRefreshing(false);
+        loading.SetState(LoadingLayout.STATE_SHOW_DATA);
     }
 
     public void addItem(Item item) {
